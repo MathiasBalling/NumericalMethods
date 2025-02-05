@@ -1,5 +1,6 @@
 #ifndef _GAUSS_WGTS_H_
 #define _GAUSS_WGTS_H_
+#include "gamma.h"
 #include "nr3.h"
 void gauleg(const Doub x1, const Doub x2, VecDoub_O &x, VecDoub_O &w) {
   const Doub EPS = 1.0e-14;

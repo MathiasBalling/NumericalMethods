@@ -1,6 +1,8 @@
 #ifndef _STEPPERSIE_H_
 #define _STEPPERSIE_H_
+#include "ludcmp.h"
 #include "nr3.h"
+#include "stepper.h"
 template <class D> struct StepperSie : StepperBase {
   typedef D Dtype;
   static const Int KMAXX = 12, IMAXX = KMAXX + 1;

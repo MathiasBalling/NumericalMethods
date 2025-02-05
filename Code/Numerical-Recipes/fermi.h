@@ -1,6 +1,8 @@
 #ifndef _FERMI_H_
 #define _FERMI_H_
+#include "derule.h"
 #include "nr3.h"
+#include "quadrature.h"
 struct Fermi {
   Doub kk, etaa, thetaa;
   Doub operator()(const Doub t);

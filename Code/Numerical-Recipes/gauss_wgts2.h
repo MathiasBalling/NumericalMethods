@@ -1,5 +1,6 @@
 #ifndef _GAUSS_WGTS2_H_
 #define _GAUSS_WGTS2_H_
+#include "eigen_sym.h"
 #include "nr3.h"
 void gaucof(VecDoub_IO &a, VecDoub_IO &b, const Doub amu0, VecDoub_O &x,
             VecDoub_O &w) {

@@ -1,5 +1,6 @@
 #ifndef _INCGAMMABETA_H_
 #define _INCGAMMABETA_H_
+#include "gamma.h"
 #include "nr3.h"
 struct Gauleg18 {
   static const Int ngau = 18;

@@ -1,5 +1,6 @@
 #ifndef _INTERP_CURVE_H_
 #define _INTERP_CURVE_H_
+#include "interp_1d.h"
 #include "nr3.h"
 struct Curve_interp {
   Int dim, n, in;

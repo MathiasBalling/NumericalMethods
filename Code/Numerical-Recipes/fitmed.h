@@ -1,6 +1,7 @@
 #ifndef _FITMED_H_
 #define _FITMED_H_
 #include "nr3.h"
+#include "sort.h"
 struct Fitmed {
   Int ndata;
   Doub a, b, abdev;

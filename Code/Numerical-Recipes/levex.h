@@ -1,6 +1,9 @@
 #ifndef _LEVEX_H_
 #define _LEVEX_H_
+#include "besselfrac.h"
 #include "nr3.h"
+#include "romberg.h"
+#include "series.h"
 Doub func(const Doub x) {
   if (x == 0.0)
     return 0.0;

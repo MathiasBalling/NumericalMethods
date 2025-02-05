@@ -1,5 +1,6 @@
 #ifndef _KRIG_H_
 #define _KRIG_H_
+#include "ludcmp.h"
 #include "nr3.h"
 template <class T> struct Krig {
   const MatDoub &x;

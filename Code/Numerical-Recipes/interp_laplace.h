@@ -1,5 +1,6 @@
 #ifndef _INTERP_LAPLACE_H_
 #define _INTERP_LAPLACE_H_
+#include "linbcg.h"
 #include "nr3.h"
 struct Laplace_interp : Linbcg {
   MatDoub &mat;

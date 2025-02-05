@@ -1,5 +1,7 @@
 #ifndef _FRED2_H_
 #define _FRED2_H_
+#include "gauss_wgts.h"
+#include "ludcmp.h"
 #include "nr3.h"
 template <class G, class K> struct Fred2 {
   const Doub a, b;

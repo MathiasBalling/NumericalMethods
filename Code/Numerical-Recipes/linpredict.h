@@ -1,6 +1,7 @@
 #ifndef _LINPREDICT_H_
 #define _LINPREDICT_H_
 #include "nr3.h"
+#include "roots_poly.h"
 void memcof(VecDoub_I &data, Doub &xms, VecDoub_O &d) {
   Int k, j, i, n = data.size(), m = d.size();
   Doub p = 0.0;

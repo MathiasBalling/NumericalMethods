@@ -1,6 +1,8 @@
 #ifndef _HYPGEO_H_
 #define _HYPGEO_H_
 #include "nr3.h"
+#include "odeint.h"
+#include "stepperbs.h"
 void hypser(const Complex &a, const Complex &b, const Complex &c,
             const Complex &z, Complex &series, Complex &deriv) {
   deriv = 0.0;

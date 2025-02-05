@@ -1,5 +1,7 @@
 #ifndef _FASPER_H_
 #define _FASPER_H_
+#include "fourier.h"
+#include "moment.h"
 #include "nr3.h"
 void spread(const Doub y, VecDoub_IO &yy, const Doub x, const Int m) {
   static Int nfac[11] = {0, 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880};

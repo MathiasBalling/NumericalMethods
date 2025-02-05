@@ -1,5 +1,6 @@
 #ifndef _FITMRQ_H_
 #define _FITMRQ_H_
+#include "gaussj.h"
 #include "nr3.h"
 struct Fitmrq {
   static const Int NDONE = 4, ITMAX = 1000;

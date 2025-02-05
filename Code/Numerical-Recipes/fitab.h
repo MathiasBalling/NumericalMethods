@@ -1,5 +1,6 @@
 #ifndef _FITAB_H_
 #define _FITAB_H_
+#include "incgammabeta.h"
 #include "nr3.h"
 struct Fitab {
   Int ndata;

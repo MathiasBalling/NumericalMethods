@@ -1,6 +1,11 @@
 #ifndef _FITEXY_H_
 #define _FITEXY_H_
+#include "fitab.h"
+#include "incgammabeta.h"
+#include "mins.h"
+#include "moment.h"
 #include "nr3.h"
+#include "roots.h"
 struct Fitexy {
   Doub a, b, siga, sigb, chi2, q;
   Int ndat;

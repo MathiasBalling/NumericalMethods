@@ -1,6 +1,8 @@
 #ifndef _KSTESTS_H_
 #define _KSTESTS_H_
+#include "ksdist.h"
 #include "nr3.h"
+#include "sort.h"
 void ksone(VecDoub_IO &data, Doub func(const Doub), Doub &d, Doub &prob) {
   Int j, n = data.size();
   Doub dt, en, ff, fn, fo = 0.0;

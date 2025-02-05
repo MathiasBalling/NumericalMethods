@@ -1,6 +1,8 @@
 #ifndef _KSTESTS_2D_H_
 #define _KSTESTS_2D_H_
+#include "ksdist.h"
 #include "nr3.h"
+#include "stattests.h"
 void quadct(const Doub x, const Doub y, VecDoub_I &xx, VecDoub_I &yy, Doub &fa,
             Doub &fb, Doub &fc, Doub &fd) {
   Int k, na, nb, nc, nd, nn = xx.size();

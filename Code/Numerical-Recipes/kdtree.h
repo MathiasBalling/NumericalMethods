@@ -1,6 +1,7 @@
 #ifndef _KDTREE_H_
 #define _KDTREE_H_
 #include "nr3.h"
+#include "pointbox.h"
 template <Int DIM> struct Boxnode : Box<DIM> {
   Int mom, dau1, dau2, ptlo, pthi;
   Boxnode() {}

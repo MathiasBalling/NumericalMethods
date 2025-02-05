@@ -1,5 +1,6 @@
 #ifndef _GAUMIXMOD_H_
 #define _GAUMIXMOD_H_
+#include "cholesky.h"
 #include "nr3.h"
 struct preGaumixmod {
   static Int mmstat;

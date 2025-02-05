@@ -1,6 +1,7 @@
 #ifndef _IQAGENT_H_
 #define _IQAGENT_H_
 #include "nr3.h"
+#include "sort.h"
 struct IQagent {
   static const Int nbuf = 1000;
   Int nq, nt, nd;

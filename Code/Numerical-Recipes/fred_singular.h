@@ -1,5 +1,6 @@
 #ifndef _FRED_SINGULAR_H_
 #define _FRED_SINGULAR_H_
+#include "ludcmp.h"
 #include "nr3.h"
 template <class Q> struct Wwghts {
   Doub h;

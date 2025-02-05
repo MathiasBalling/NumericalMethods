@@ -1,6 +1,7 @@
 #ifndef _FITSVD_H_
 #define _FITSVD_H_
 #include "nr3.h"
+#include "svd.h"
 struct Fitsvd {
   Int ndat, ma;
   Doub tol;

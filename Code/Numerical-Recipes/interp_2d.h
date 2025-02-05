@@ -1,5 +1,6 @@
 #ifndef _INTERP_2D_H_
 #define _INTERP_2D_H_
+#include "interp_linear.h"
 #include "nr3.h"
 struct Bilin_interp {
   Int m, n;
