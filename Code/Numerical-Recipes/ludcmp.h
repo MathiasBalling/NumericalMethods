@@ -9,6 +9,7 @@ struct LUdcmp {
   LUdcmp(MatDoub_I &a);
   void solve(VecDoub_I &b, VecDoub_O &x);
   void solve(MatDoub_I &b, MatDoub_O &x);
+  void decompose(MatDoub &lower, MatDoub &upper);
   void inverse(MatDoub_O &ainv);
   Doub det();
   void mprove(VecDoub_I &b, VecDoub_IO &x);
@@ -107,6 +108,24 @@ void LUdcmp::inverse(MatDoub_O &ainv) {
   }
   solve(ainv, ainv);
 }
+// Compose separately the lower and upper matrices from the LU decomposition
+void LUdcmp::decompose(MatDoub &lower, MatDoub &upper) {
+  for (size_t k = 0; k < n; k++) {
+    for (size_t l = 0; l < n; l++) {
+      if (l > k) {
+        upper[k][l] = lu[k][l];
+        lower[k][l] = 0.0;
+      } else if (l < k) {
+        upper[k][l] = 0.0;
+        lower[k][l] = lu[k][l];
+      } else {
+        upper[k][l] = lu[k][l];
+        lower[k][l] = 1.0;
+      }
+    }
+  }
+}
+
 Doub LUdcmp::det() {
   Doub dd = d;
   for (Int i = 0; i < n; i++)

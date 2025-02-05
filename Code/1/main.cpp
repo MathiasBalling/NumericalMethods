@@ -2,6 +2,7 @@
 #include "nr3.h"
 #include "utilities.h"
 #include <print>
+auto test() { return 0; }
 
 int main(int argc, char *argv[]) {
   // Exercise 1:
@@ -32,12 +33,25 @@ int main(int argc, char *argv[]) {
   auto LUdcmp_solver = LUdcmp(A);
   LUdcmp_solver.solve(b, x);
 
+  MatDoub L(3, 3);
+  MatDoub U(3, 3);
+  LUdcmp_solver.decompose(L, U);
+
   // print x
   println("A:");
   util::print(A);
+
   println("b:");
   util::print(b);
+
   println("x:");
   util::print(x);
+
+  println("Lower:");
+  util::print(L);
+
+  println("Upper:");
+  util::print(U);
+
   return 0;
 }
