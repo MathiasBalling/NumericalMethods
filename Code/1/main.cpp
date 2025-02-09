@@ -41,17 +41,21 @@ int main(int argc, char *argv[]) {
   println("A:");
   util::print(A);
 
-  println("b:");
-  util::print(b);
-
-  println("x:");
-  util::print(x);
-
   println("Lower:");
   util::print(L);
 
   println("Upper:");
   util::print(U);
 
+  println("b:");
+  util::print(b);
+
+  println("x:");
+  util::print(x);
+
+  LUdcmp_solver.mprove(b, x);
+
+  println("x improved:");
+  util::print(x);
   return 0;
 }
