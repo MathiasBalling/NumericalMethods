@@ -1,0 +1,57 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+
+\title{ADA exam}
+\author{190483865}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Exercise 1}
+
+\subsection{}
+\textbf{Find the Singular Value Decomposition $A = UWV^T$. State the diagonal elements in W. Submit the used code.}
+
+% TODO: State the diagonal elements in W.
+$w_{diag}$ = 4752.37, 806.789, 58.1826, 16.9671, 3.5654, 3.02446
+
+\subsection{}
+\textbf{Use the Singular Value Decomposition to compute the solution x to Ax = b. State the solution x. Submit the used code.}
+
+% TODO: State the solution x.
+x = -24.3946, 72.8921, 1.7861, -63.2459, -76.9598, -1, 7.3859
+
+\subsection{} 
+\textbf{State an estimate of the accuracy on the solution x. State an explanation of how you computed the accuracy. Submit the used code.}
+
+Results:\\
+Using threshold: 1e-10\\
+Residual error: 0.00016232797022399024\\
+Random fitting: 0.9219544457292888\\
+Std. dev.: 0.000210421, 0.00123948, 0.0171873, 0.0589376, 0.280474, 0.330638
+
+The residual error is the main way to see the accuracy of the fitting. This error should be under the random fitting and it is in this case. This indicate our method of dertermining the accuracy is adequate.
+The standard deviation of the fitted x-values are also really low compared to the x-values further indicating that our method of determining the accuracy is adequate.
+
+\subsection{}
+\textbf{Compute and state the residual vector $r \equiv Ax-b$. Submit the used code.}
+
+$r = -8.55671, 0.527233, -0.673201, -1.26463, -0.831363, 0.464874, 7.6186, 1.13496, -0.401232, -0.325707, -0.217701, 0.230878, -0.218717, 0.656575, -0.0388285, -0.535747, 0.752, 515, 0.561871, 0.324391, -0.743685, -0.744122, 1.0811, -0.605121, -0.362054, 0.341041, -0.89615, -0.411017, -0.0485407, 1.13667, 1.08557, -0.627664, -0.400131, 1.06093, 0.132202, 0.55506, 0.408264, 0.87311, -0.680265, 0.400403, -0.763662$
+
+\subsection{}
+\textbf{Compute the new $\sigma_i$'s and then the new design matrix $A$ and new right hand side $b$. State $[A]_{0,0}$ and $[b]_6$. Submit the used code.}
+
+$A_{0,0} = 0.1168673915004323$\\
+$b_6=284.4027782079991$
+
+\subsection{}
+\textbf{Compute and use the Singular Value Decomposition to compute the solution $x$ to $Ax = b$ with the new design matrix and new right hand side. State the solution $x$.}
+
+$x_{sigma} = -25.3757 72.8928 2.01114 -63.252 -76.9682 -1 7.3859$
+
+\end{document}

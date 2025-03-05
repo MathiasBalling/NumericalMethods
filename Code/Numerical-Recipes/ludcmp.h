@@ -1,6 +1,8 @@
 #ifndef _LUDCMP_H_
 #define _LUDCMP_H_
 #include "nr3.h"
+
+// Lower Upper Decomposition
 struct LUdcmp {
   Int n;
   MatDoub lu;

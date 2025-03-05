@@ -1,6 +1,8 @@
 #ifndef _CHOLESKY_H_
 #define _CHOLESKY_H_
 #include "nr3.h"
+
+// Cholesky decomposition (for symmetric and pos. def. matrices)
 struct Cholesky {
   Int n;
   MatDoub el;

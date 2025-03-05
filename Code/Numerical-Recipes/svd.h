@@ -1,6 +1,8 @@
 #ifndef _SVD_H_
 #define _SVD_H_
 #include "nr3.h"
+
+// Singular Value Decomposition
 struct SVD {
   Int m, n;
   MatDoub u, v;
@@ -25,6 +27,7 @@ struct SVD {
     return (w[0] <= 0. || w[n - 1] <= 0.) ? 0. : w[n - 1] / w[0];
   }
 
+private:
   void decompose();
   void reorder();
   Doub pythag(const Doub a, const Doub b);

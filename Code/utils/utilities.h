@@ -12,32 +12,30 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 namespace util {
 void print(MatDoub mat, string symbol = "") {
   if (symbol.compare(""))
-    cout << symbol << "	Matrix " << mat.nrows() << "x" << mat.ncols() << ":"
-         << endl;
+    std::cout << symbol << "	Matrix " << mat.nrows() << "x" << mat.ncols()
+              << ":" << endl;
 
   for (int m = 0; m < mat.nrows(); m++) {
     for (int n = 0; n < mat.ncols(); n++) {
-      cout << setw(15) << mat[m][n] << "\t";
+      std::cout << setw(15) << mat[m][n] << "\t";
     }
-    cout << endl;
+    std::cout << endl;
   }
-  cout << endl;
+  std::cout << endl;
 }
 
 void printDiag(MatDoub mat, string symbol = "") {
   if (symbol.compare(""))
-    cout << symbol << "	MatrixDiag " << mat.nrows() << "x" << mat.ncols() << ":"
-         << endl;
+    std::cout << symbol << "	MatrixDiag " << mat.nrows() << "x"
+              << mat.ncols() << ":" << endl;
   double nmax = mat.nrows() < mat.nrows() ? mat.nrows() : mat.nrows();
   for (int n = 0; n < nmax; n++) {
-    cout << setw(15) << mat[n][n] << "\t";
+    std::cout << setw(15) << mat[n][n] << "\t";
   }
-  cout << endl;
+  std::cout << endl;
 }
 
 MatDoub diag(VecDoub &V) {
@@ -56,12 +54,12 @@ MatDoub diag(VecDoub &V) {
 
 void print(VecDoub vec, string symbol = "") {
   if (symbol.compare(""))
-    cout << symbol << "	Vector " << vec.size() << "D:" << endl;
+    std::cout << symbol << "	Vector " << vec.size() << "D:" << endl;
 
   for (int m = 0; m < vec.size(); m++) {
-    cout << setw(15) << vec[m];
+    std::cout << setw(15) << vec[m];
   }
-  cout << endl;
+  std::cout << endl;
 }
 
 MatDoub Transpose(const MatDoub &Mat) {
@@ -75,7 +73,6 @@ MatDoub Transpose(const MatDoub &Mat) {
 }
 
 MatDoub T(const MatDoub &Mat) { return Transpose(Mat); }
-
 } // namespace util
 
 MatDoub operator*(const MatDoub &A1, const MatDoub &A2) {
@@ -112,6 +109,48 @@ VecDoub operator*(const MatDoub &A, const VecDoub &b) {
       temp += A[n][m] * b[m];
     }
     res[n] = temp;
+  }
+  return res;
+}
+
+VecDoub operator-(const VecDoub &v1, const VecDoub &v2) {
+  if (v1.size() != v2.size()) {
+    std::cout << "in minus: the size of  cclv1 is not equal to the size of "
+                 "vector b"
+              << std::endl;
+  }
+  VecDoub res(v1.size());
+  for (int i = 0; i < v1.size(); i++) {
+    res[i] = v1[i] - v2[i];
+  }
+  return res;
+}
+
+VecDoub operator+(const VecDoub &a, const VecDoub &b) {
+  if (a.size() != b.size()) {
+    std::cout << "in prod: the number of rows in A is not equal to the size of "
+                 "vector b"
+              << std::endl;
+  }
+  VecDoub res(a.size());
+  for (int i = 0; i < a.size(); i++) {
+    res[i] = a[i] + b[i];
+  }
+  return res;
+}
+
+double norm(VecDoub &v) {
+  double res = 0;
+  for (int i = 0; i < v.size(); i++) {
+    res += v[i] * v[i];
+  }
+  return sqrt(res);
+}
+
+VecDoub operator/(const VecDoub &v, double s) {
+  VecDoub res(v.size());
+  for (int i = 0; i < v.size(); i++) {
+    res[i] = v[i] / s;
   }
   return res;
 }
