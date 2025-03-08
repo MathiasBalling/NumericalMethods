@@ -11,14 +11,17 @@ double bisection(double (*func)(double), double xl, double xh,
   if (f_xl * f_xh >= 0.0)
     throw("Root must be bracketed for bisection in rtbis");
 
-  std::println("|{:^10}|{:^20}|{:^20}|{:^20}|", "k", "x_k", "d_k", "rtb");
+  std::println("|{:^10}|{:^20}|{:^20}|{:^20}|", "k", "x_k", "d_k",
+               "root estimate");
 
   rtb = f_xl < 0.0 ? (dx = xh - xl, xl) : (dx = xl - xh, xh);
   for (int i = 0; i < max_iter; i++) {
     auto xmid_old = x_mid;
     f_xh = func(x_mid = rtb + (dx *= 0.5));
-    std::println("|{:^10}|{:^20.10}|{:^20.10}|{:^20.10}|", i + 1, x_mid,
-                 x_mid - xmid_old, rtb);
+    if (i > 0) {
+      std::println("|{:^10}|{:^20.10}|{:^20.10}|{:^20.10}|", i, x_mid,
+                   x_mid - xmid_old, rtb);
+    }
     if (f_xh <= 0.0)
       rtb = x_mid;
     if (abs(dx) < accuracy || f_xh == 0.0)
