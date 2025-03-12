@@ -73,6 +73,14 @@ MatDoub Transpose(const MatDoub &Mat) {
 }
 
 MatDoub T(const MatDoub &Mat) { return Transpose(Mat); }
+
+double norm(VecDoub &v) {
+  double res = 0;
+  for (int i = 0; i < v.size(); i++) {
+    res += v[i] * v[i];
+  }
+  return sqrt(res);
+}
 } // namespace util
 
 MatDoub operator*(const MatDoub &A1, const MatDoub &A2) {
@@ -137,14 +145,6 @@ VecDoub operator+(const VecDoub &a, const VecDoub &b) {
     res[i] = a[i] + b[i];
   }
   return res;
-}
-
-double norm(VecDoub &v) {
-  double res = 0;
-  for (int i = 0; i < v.size(); i++) {
-    res += v[i] * v[i];
-  }
-  return sqrt(res);
 }
 
 VecDoub operator/(const VecDoub &v, double s) {

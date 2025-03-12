@@ -14,7 +14,7 @@ double calculate_random_fitting(double m, double n) {
 
 double calculate_residual_error(MatDoub A, VecDoub b, VecDoub x) {
   VecDoub top = A * x - b;
-  return norm(top) / norm(b);
+  return util::norm(top) / util::norm(b);
 }
 
 VecDoub calculate_standard_deviation_svd(SVD &svd_solver, double threshold) {
