@@ -1,32 +1,78 @@
 #ifndef ROOTS_TABLE_H
 #define ROOTS_TABLE_H
 #include "nr3.h"
+#include <cmath>
 #include <print>
 
 namespace roots_table {
 enum class RootType { Bisection, Ridder, Secant, FalsePositive, Newton };
 void print_table(const std::vector<double> &x_k, RootType method) {
-  println("x_k.size()={}", x_k.size());
-  println("x_k={}", x_k);
-
   std::vector<double> d_k;
-  for (size_t i = 0; i < x_k.size() - 1; i++) {
-    d_k.push_back(x_k[i + 1] - x_k[i]);
+  d_k.push_back(NAN);
+  for (size_t i = 1; i < x_k.size(); i++) {
+    d_k.push_back(x_k[i] - x_k[i - 1]);
   }
-  println("d_k.size()={}", d_k.size());
-  println("d_k={}", d_k);
-  // TODO: Calculate the C constant and the error
-  switch (method) {
-  case RootType::Bisection:
-    break;
-  case RootType::Ridder:
-    break;
-  case RootType::Secant:
-    break;
-  case RootType::FalsePositive:
-    break;
-  case RootType::Newton:
-    break;
+
+  // Calculate the convergence constant C
+  std::vector<double> C;
+  for (size_t i = 0; i < d_k.size(); i++) {
+    switch (method) {
+    case RootType::Bisection:
+      C.push_back(0.5);
+      break;
+    case RootType::FalsePositive:
+      C.push_back(abs(d_k[i]) / abs(d_k[i - 1]));
+      break;
+    case RootType::Secant:
+      C.push_back(abs(d_k[i]) / (pow(abs(d_k[i - 1]), 1.62)));
+      break;
+    case RootType::Ridder:
+      C.push_back(abs(d_k[i]) / (pow(abs(d_k[i - 1]), 3)));
+      break;
+    case RootType::Newton:
+      C.push_back(abs(d_k[i]) / (pow(abs(d_k[i - 1]), 2)));
+      break;
+    default:
+      throw("Unknown method");
+      break;
+    }
+  }
+
+  // Calculate the error
+  std::vector<double> e_k;
+  for (size_t i = 0; i < d_k.size(); i++) {
+    switch (method) {
+    case RootType::Bisection:
+      e_k.push_back(abs(d_k[i]));
+      break;
+    case RootType::FalsePositive:
+      e_k.push_back((-C.at(i) / (1 - C.at(i))) * d_k[i]);
+      break;
+    case RootType::Secant:
+      e_k.push_back(C.at(i) * pow(abs(d_k[i]), 1.62));
+      break;
+    case RootType::Ridder:
+      e_k.push_back(C.at(i) * pow(abs(d_k[i]), 3));
+      break;
+    case RootType::Newton:
+      e_k.push_back(C.at(i) * pow(abs(d_k[i]), 2));
+      break;
+    default:
+      throw("Unknown method");
+      break;
+    }
+  }
+
+  // Print the table
+  // Table header
+  std::println("|{:^10}|{:^21}|{:^21}|{:^21}|{:^21}|", "k", "x_k", "d_k", "C",
+               "e");
+  // Table header separator
+  std::println("|{:-^10}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|", "", "", "", "", "");
+  // Table body
+  for (size_t i = 0; i < x_k.size(); i++) {
+    std::println("|{:^10}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|", i + 1,
+                 x_k.at(i), d_k.at(i), C.at(i), e_k.at(i));
   }
 }
 
