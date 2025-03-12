@@ -125,7 +125,7 @@ int main() {
   util::print(sol_pont.first, "Pont");
   util::print(sol_pont.second, "Pont sigma");
   println("\n{:/^100}", " Filip ");
-  auto sol_filip = solve_SVD(xFilip, yFilip, 11, 0.0);
+  auto sol_filip = solve_SVD(xFilip, yFilip, 11, 0.001);
   util::print(sol_filip.first, "Filip");
   util::print(sol_filip.second, "Filip sigma");
 

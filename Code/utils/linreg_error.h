@@ -4,6 +4,7 @@
 #include "nr3.h"
 #include "svd.h"
 #include "utilities.h"
+#include <print>
 namespace linreg_error {
 double calculate_random_fitting(double m, double n) {
   // row=m
@@ -21,14 +22,14 @@ VecDoub calculate_standard_deviation_svd(SVD &svd_solver, double threshold) {
   auto V = svd_solver.v;
   auto sigma = VecDoub(w.size());
   double sum;
-  for (int i = 0; i < w.size(); i++) {
+  for (int j = 0; j < w.size(); j++) {
     sum = 0;
-    for (int j = 0; j < w.size(); j++) {
+    for (int i = 0; i < w.size(); i++) {
       if (w[i] > threshold) {
         sum += pow(V[j][i] / w[i], 2);
       }
     }
-    sigma[i] = sqrt(sum);
+    sigma[j] = sqrt(sum);
   }
   return sigma;
 }

@@ -90,7 +90,7 @@ int main() {
   util::print(x_sigma, "x_sigma");
 
   // Error estimation for new (Not needed)
-  // VecDoub b_fit_sigma = A * x;
+  // VecDoub b_fit_sigma = A_sigma * x_sigma;
   // println("Using threshold: {}", threshold);
   // double residual_error_sigma =
   //     linreg_error::calculate_residual_error(A_sigma, b_sigma, x_sigma);
