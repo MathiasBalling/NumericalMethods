@@ -69,6 +69,7 @@ void lnsrch(VecDoub_I &xold, const Doub fold, VecDoub_I &g, VecDoub_IO &p,
     alam = MAX(tmplam, 0.1 * alam);
   }
 }
+
 template <class T> struct NRfdjac {
   const Doub EPS;
   T &func;
@@ -92,6 +93,7 @@ template <class T> struct NRfdjac {
     return df;
   }
 };
+
 template <class T> struct NRfmin {
   VecDoub fvec;
   T &func;
@@ -106,6 +108,7 @@ template <class T> struct NRfmin {
     return 0.5 * sum;
   }
 };
+
 template <class T> void newt(VecDoub_IO &x, Bool &check, T &vecfunc) {
   const Int MAXITS = 200;
   const Doub TOLF = 1.0e-8, TOLMIN = 1.0e-12, STPMX = 100.0;
@@ -176,6 +179,7 @@ template <class T> void newt(VecDoub_IO &x, Bool &check, T &vecfunc) {
   }
   throw("MAXITS exceeded in newt");
 }
+
 template <class T> void broydn(VecDoub_IO &x, Bool &check, T &vecfunc) {
   const Int MAXITS = 200;
   const Doub EPS = numeric_limits<Doub>::epsilon();
