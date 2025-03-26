@@ -27,7 +27,7 @@ VecDoub vecfunc(VecDoub_I q) {
   f[3] = (q[2] + k * sin(q[4])) - n;
   f[4] = (sinh(q[3] / q[6])) - tan(q[5]);
   f[5] = ((1.0 + (v / (w * q[0]))) * tan(q[5])) - tan(q[4]);
-  f[6] = (q[0] * (1.0 - alpha * q[7])) - q[1];
+  f[6] = (q[0] * (1.0 + alpha * q[7])) - q[1];
   f[7] = ((w * q[0]) / (2.0 * sin(q[5]))) - q[7];
 
   return f;
@@ -74,7 +74,8 @@ void print_roots_table(std::vector<VecDoub> x_k) {
 }
 
 template <class T>
-void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200) {
+void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
+                  bool print_table = false) {
   std::vector<VecDoub> x_k; // For table
   const Doub TOLF = 1.0e-8, TOLMIN = 1.0e-12, STPMX = 100.0;
   const Doub TOLX = numeric_limits<Doub>::epsilon();
@@ -121,7 +122,11 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200) {
     if (test < TOLF) {
       check = false;
       x_k.push_back(x);
-      print_roots_table(x_k);
+      if (print_table) {
+        print_roots_table(x_k);
+      } else {
+        println("Done in {} iterations.", its);
+      }
       return;
     }
     if (check) {
@@ -134,7 +139,11 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200) {
       }
       check = (test < TOLMIN);
       x_k.push_back(x);
-      print_roots_table(x_k);
+      if (print_table) {
+        print_roots_table(x_k);
+      } else {
+        println("Done in {} iterations.", its);
+      }
       return;
     }
     test = 0.0;
@@ -145,7 +154,11 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200) {
     }
     if (test < TOLX) {
       x_k.push_back(x);
-      print_roots_table(x_k);
+      if (print_table) {
+        print_roots_table(x_k);
+      } else {
+        println("Done in {} iterations.", its);
+      }
       return;
     }
     x_k.push_back(x);
@@ -153,83 +166,89 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200) {
   throw("MAXITS exceeded in newt");
 }
 
-int main(int argc, char *argv[]) {
+int main() {
 
   {
     println("\n{:/^120}", " n=5.0 ");
     n = 5.0;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
-    Doub qvals[8] = {29.0, 30.0, 5.0, 15.0, 1.0, 0.5, 40.0, 100.0};
+    Doub qvals[8] = {29.0, 29.1, 5.0, 15.0, 1.0, 0.5, 40.0, 100.0};
     VecDoub_IO q(8, qvals);
+    util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    // newton_multi(q, check, func);
-    newt(q, check, func);
-    util::print(q, "x roots with newton");
+    newton_multi(q, check, func);
+    util::print(q, "q roots with newton");
+    println("Local minimum: {}", check);
   }
 
   {
     println("\n{:/^120}", " n=2.0 ");
     n = 2.0;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
-    Doub qvals[8] = {27.0, 28.0, 2.0, 14.0, 1.0, 0.5, 40.0, 100.0};
+    Doub qvals[8] = {27.0, 27.1, 2.0, 14.0, 1.0, 0.5, 40.0, 100.0};
     VecDoub_IO q(8, qvals);
+    util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    // newton_multi(q, check, func);
-    newt(q, check, func);
-    util::print(q, "x roots with newton");
+    newton_multi(q, check, func);
+    util::print(q, "q roots with newton");
+    println("Local minimum: {}", check);
   }
 
   {
     println("\n{:/^120}", " n=1.0 ");
     n = 1.0;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
-    Doub qvals[8] = {26.0, 27.0, 1.0, 13.0, 0.5, 0.5, 40.0, 100.0};
+    Doub qvals[8] = {26.0, 26.1, 1.0, 13.0, 0.5, 0.5, 40.0, 100.0};
     VecDoub_IO q(8, qvals);
+    util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    // newton_multi(q, check, func);
-    newt(q, check, func);
-    util::print(q, "x roots with newton");
+    newton_multi(q, check, func);
+    util::print(q, "q roots with newton");
+    println("Local minimum: {}", check);
   }
 
   {
     println("\n{:/^120}", " n=0.5 ");
     n = 0.5;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
-    Doub qvals[8] = {26.0, 26.5, 0.5, 13.0, 0.2, 0.1, 40.0, 100.0};
+    Doub qvals[8] = {26.0, 26.1, 0.5, 13.0, 0.2, 0.1, 40.0, 100.0};
     VecDoub_IO q(8, qvals);
+    util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    // newton_multi(q, check, func);
-    newt(q, check, func);
-    util::print(q, "x roots with newton");
+    newton_multi(q, check, func);
+    util::print(q, "q roots with newton");
+    println("Local minimum: {}", check);
   }
 
   {
     println("\n{:/^120}", " n=0.2 ");
     n = 0.2;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
-    Doub qvals[8] = {25.0, 25.5, 0.2, 12.0, 0.1, 0.05, 40.0, 100.0};
+    Doub qvals[8] = {25.5, 25.6, 0.2, 12.0, 0.1, 0.05, 40.0, 100.0};
     VecDoub_IO q(8, qvals);
+    util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    // newton_multi(q, check, func);
-    newt(q, check, func);
-    util::print(q, "x roots with newton");
+    newton_multi(q, check, func);
+    util::print(q, "q roots with newton");
+    println("Local minimum: {}", check);
   }
 
   {
     println("\n{:/^120}", " n=0.1 ");
     n = 0.1;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
-    Doub qvals[8] = {25.0, 25.5, 0.1, 12.0, 0.1, 0.05, 40.0, 100.0};
+    Doub qvals[8] = {25.5, 25.6, 0.1, 12.0, 0.1, 0.05, 40.0, 100.0};
     VecDoub_IO q(8, qvals);
+    util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    // newton_multi(q, check, func);
-    newt(q, check, func);
-    util::print(q, "x roots with newton");
+    newton_multi(q, check, func);
+    util::print(q, "q roots with newton");
+    println("Local minimum: {}", check);
   }
 }
