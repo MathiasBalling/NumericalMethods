@@ -1,0 +1,138 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+
+\title{Mandatory 2}
+\author{Mathias Balling}
+\date{\today}
+
+\begin{document}
+\maketitle
+% \tableofcontents
+% \newpage
+
+\section{Exercise 1}
+NR3's implementation of \texttt{newt} from "roots\_multidim.h" is used as a base for solving the non-linear system of equations.
+
+The vector function is set up as follows:
+\begin{minted}{cpp}
+// Material constants:
+const double v = 120.0;                 // kg
+const double k = 2.5;                   // m
+const double w = 4.0;                   // kg/m
+const double alpha = 2.0 * pow(10, -7); // kg^-1
+
+// Other constants:
+const double d = 30.0; // m
+double n = 5.0;        // m (Updated in main)
+
+VecDoub vecfunc(VecDoub_I q) {
+  assert(q.size() == 8);
+
+  // q=[L0, L, p, x, theta, phi/varphi, a, H]
+  // Zero vectors
+  VecDoub f(8);
+  f[0] = (q[6] * (cosh(q[3] / q[6]) - 1.0)) - q[2];
+  f[1] = (2.0 * q[6] * sinh(q[3] / q[6])) - q[1];
+  f[2] = (2.0 * q[3] + 2.0 * k * cos(q[4])) - d;
+  f[3] = (q[2] + k * sin(q[4])) - n;
+  f[4] = (sinh(q[3] / q[6])) - tan(q[5]);
+  f[5] = ((1.0 + (v / (w * q[0]))) * tan(q[5])) - tan(q[4]);
+  f[6] = (q[0] * (1.0 + alpha * q[7])) - q[1];
+  f[7] = ((w * q[0]) / (2.0 * sin(q[5]))) - q[7];
+
+  return f;
+}
+\end{minted}
+
+\subsection{}
+For $n=5$:
+$$
+\begin{array}{ccc}
+  L_0 & = & 27.5233 \\
+  H & = & 124.541
+\end{array}
+$$
+using starting guess:
+$$
+\begin{array}{cccccccc}
+L_0 = 29 & L = 29.1 & p = 5 & x = 15 & \theta  = 1 & \varphi = 0.5 & a = 40 & H = 100
+\end{array}
+$$
+
+\subsection{}
+For $n=2$:
+$$
+\begin{array}{ccc}
+  L_0 & = & 25.4565 \\
+  H & = & 294.733
+\end{array}
+$$
+using starting guess:
+$$
+\begin{array}{cccccccc}
+L_0 = 27 & L = 27.1 & p = 2 & x = 14 & \theta  = 1 & \varphi = 0.5 & a = 40 & H = 100
+\end{array}
+$$
+
+\subsection{}
+For $n=1$:
+$$
+\begin{array}{ccc}
+  L_0 & = & 25.114 \\
+  H & = & 587.781
+\end{array}
+$$
+using starting guess:
+$$
+\begin{array}{cccccccc}
+L_0 = 26 & L = 26.1 & p = 1 & x = 13 & \theta  = 0.5 & \varphi = 0.5 & a = 40 & H = 100
+\end{array}
+$$
+
+\subsection{}
+For $n=0.5$:
+$$
+\begin{array}{ccc}
+  L_0 & = & 25.0235 \\
+  H & = & 1174.94
+\end{array}
+$$
+using starting guess:
+$$
+\begin{array}{cccccccc}
+L_0 = 26 & L = 26.1 & p = 0.5 & x = 13 & \theta  = 0.2 & \varphi = 0.1 & a = 40 & H = 100
+\end{array}
+$$
+
+\subsection{}
+For $n=0.2$:
+$$
+\begin{array}{ccc}
+  L_0 & = & 24.99 \\
+  H & = & 2936.27
+\end{array}
+$$
+using starting guess:
+$$
+\begin{array}{cccccccc}
+L_0 = 25.5 & L = 25.6 & p = 0.2 & x = 12 & \theta  = 0.1 & \varphi = 0.05 & a = 40 & H = 100
+\end{array}
+$$
+
+\subsection{}
+For $n=0.1$:
+$$
+\begin{array}{ccc}
+  L_0 & = & 24.9719\\
+  H & = & 5869.9
+\end{array}
+$$
+using starting guess:
+$$
+\begin{array}{cccccccc}
+L_0 = 25.5 & L = 25.6 & p = 0.1 & x = 12 & \theta  = 0.1 & \varphi = 0.05 & a = 40 & H = 100
+\end{array}
+$$
+\end{document}

@@ -7,3 +7,4 @@ compile_commands.json
 *.log
 *.out
 *.toc
+_minted/
