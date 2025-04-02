@@ -5,7 +5,9 @@
 #include <print>
 
 namespace roots_table {
+
 enum class RootType { Bisection, Ridder, Secant, FalsePositive, Newton };
+
 void print_table(const std::vector<double> &x_k, RootType method) {
   std::vector<double> d_k;
   d_k.push_back(NAN);
