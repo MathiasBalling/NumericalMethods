@@ -26,7 +26,8 @@ richardson_extrapolation_error(const std::vector<double> &A_k,
   for (size_t i = 2; i < A_k.size(); i++) {
     const double A_1 = A_k[i - 1];
     const double A_2 = A_k[i];
-    double error = (A_1 - A_2) / (alpha_k[i] - 1);
+    double error =
+        (A_2 - A_1) / (alpha_k[i] - 1); // FIX: Use order for function instead
     A_R.push_back(error);
   }
   return A_R;

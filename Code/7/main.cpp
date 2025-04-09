@@ -179,30 +179,30 @@ int main(int argc, char *argv[]) {
   }
 
   ////////////////////// v //////////////////////
-  println("\n{:/^100}", " v ");
-  suppress_output([]() {
-    using namespace matplot;
-    auto [X1, Y1] = meshgrid(iota(-8, .5, +8));
-    auto Z1 = transform(X1, Y1, [](double x, double y) {
-      double eps = std::nextafter(0.0, 1.0);
-      double R = sqrt(pow(x, 2) + pow(y, 2)) + eps;
-      return sin(R) / R;
-    });
-    mesh(X1, Y1, Z1);
-
-    hold(on);
-    auto [X2, Y2] = meshgrid(iota(-8, .5, +8));
-    auto Z2 = transform(X2, Y2, [](double x, double y) {
-      double eps = std::nextafter(0.0, 1.0);
-      double R = sqrt(pow(x, 3) + pow(y, 3)) + eps;
-      return sin(R) / R;
-    });
-    mesh(X2, Y2, Z2);
-    hold(off);
-
-    save("img/test.jpg");
-    show();
-  });
+  // println("\n{:/^100}", " v ");
+  // suppress_output([]() {
+  //   using namespace matplot;
+  //   auto [X1, Y1] = meshgrid(iota(-8, .5, +8));
+  //   auto Z1 = transform(X1, Y1, [](double x, double y) {
+  //     double eps = std::nextafter(0.0, 1.0);
+  //     double R = sqrt(pow(x, 2) + pow(y, 2)) + eps;
+  //     return sin(R) / R;
+  //   });
+  //   mesh(X1, Y1, Z1);
+  //
+  //   hold(on);
+  //   auto [X2, Y2] = meshgrid(iota(-8, .5, +8));
+  //   auto Z2 = transform(X2, Y2, [](double x, double y) {
+  //     double eps = std::nextafter(0.0, 1.0);
+  //     double R = sqrt(pow(x, 3) + pow(y, 3)) + eps;
+  //     return sin(R) / R;
+  //   });
+  //   mesh(X2, Y2, Z2);
+  //   hold(off);
+  //
+  //   save("img/test.jpg");
+  //   show();
+  // });
 
   ////////////////////// vi //////////////////////
   println("\n{:/^100}", " vi ");

@@ -1,10 +1,3 @@
-/*
- * utilities.h
- *
- *  Created on: Feb 2, 2015
- *      Author: jpb
- */
-
 #ifndef UTILITIES_H_
 #define UTILITIES_H_
 
@@ -154,5 +147,15 @@ VecDoub operator/(const VecDoub &v, double s) {
   }
   return res;
 }
+
+VecDoub operator*(const VecDoub &v, double s) {
+  VecDoub res(v.size());
+  for (int i = 0; i < v.size(); i++) {
+    res[i] = v[i] * s;
+  }
+  return res;
+}
+
+VecDoub operator*(double s, const VecDoub &v) { return v * s; }
 
 #endif /* UTILITIES_H_ */
