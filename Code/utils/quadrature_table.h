@@ -26,11 +26,23 @@ richardson_extrapolation_error(const std::vector<double> &A_k,
   for (size_t i = 2; i < A_k.size(); i++) {
     const double A_1 = A_k[i - 1];
     const double A_2 = A_k[i];
-    double error = (A_2 - A_1) /
-                   (alpha_k_order - 1); // FIX: Use order for function instead
+    double error = (A_2 - A_1) / (alpha_k_order - 1);
     A_R.push_back(error);
   }
   return A_R;
+}
+
+double richardson_extrapolation_error_current(const std::vector<double> &A_k,
+                                              const double alpha_k_order) {
+  double error = std::numeric_limits<double>::max();
+  if (A_k.size() < 2) {
+    return error;
+  } else {
+    const double A_1 = A_k[A_k.size() - 2];
+    const double A_2 = A_k[A_k.size() - 1];
+    error = (A_2 - A_1) / (alpha_k_order - 1);
+    return error;
+  }
 }
 
 std::vector<double>
@@ -92,9 +104,10 @@ void print_quadrature_table(double (*func)(double), double limit_low,
   std::vector<double> A_k;
   std::vector<int> f_comps;
   double expected_order = 0.0;
-  for (int i = 0; i <= 20; i += 1) {
-    // int its = i;
-    int its = pow(2, i);
+  double error = std::numeric_limits<double>::max();
+  int i = 0;
+  while (abs(error) > accuracy) {
+    const int its = pow(2, i);
     switch (type) {
     case IntegrationType::Midpoint:
       A_k.push_back(midpoint(func, limit_low, limit_high, its));
@@ -114,6 +127,8 @@ void print_quadrature_table(double (*func)(double), double limit_low,
     default:
       throw("Unknown integration type");
     }
+    error = richardson_extrapolation_error_current(A_k, expected_order);
+    i += 1;
   }
 
   // Calculate the differences
