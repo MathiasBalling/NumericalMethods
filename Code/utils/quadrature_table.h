@@ -21,13 +21,13 @@ std::vector<double> alpha_k_order(const std::vector<double> &A_k) {
 
 std::vector<double>
 richardson_extrapolation_error(const std::vector<double> &A_k,
-                               const std::vector<double> &alpha_k) {
+                               const double alpha_k_order) {
   std::vector<double> A_R = {NAN, NAN}; // No error on the first two
   for (size_t i = 2; i < A_k.size(); i++) {
     const double A_1 = A_k[i - 1];
     const double A_2 = A_k[i];
-    double error =
-        (A_2 - A_1) / (alpha_k[i] - 1); // FIX: Use order for function instead
+    double error = (A_2 - A_1) /
+                   (alpha_k_order - 1); // FIX: Use order for function instead
     A_R.push_back(error);
   }
   return A_R;
@@ -86,24 +86,30 @@ double simpson(double (*func)(double), double limit_low, double limit_high,
 }
 
 void print_quadrature_table(double (*func)(double), double limit_low,
-                            double limit_high, IntegrationType type) {
+                            double limit_high, IntegrationType type,
+                            double accuracy = 1e-3) {
+  // TODO: Use accuracy to stop
   std::vector<double> A_k;
   std::vector<int> f_comps;
-  for (int i = 0; i <= 10; i += 1) {
+  double expected_order = 0.0;
+  for (int i = 0; i <= 20; i += 1) {
     // int its = i;
     int its = pow(2, i);
     switch (type) {
     case IntegrationType::Midpoint:
       A_k.push_back(midpoint(func, limit_low, limit_high, its));
       f_comps.push_back(its + 1);
+      expected_order = 2.0;
       break;
     case IntegrationType::Trapezoidal:
       A_k.push_back(trapezoidal(func, limit_low, limit_high, its));
       f_comps.push_back(its + 1);
+      expected_order = 2.0;
       break;
     case IntegrationType::Simpson:
       A_k.push_back(simpson(func, limit_low, limit_high, its));
       f_comps.push_back((its % 2 == 0 ? its : its + 1) + 1);
+      expected_order = 4.0;
       break;
     default:
       throw("Unknown integration type");
@@ -121,10 +127,9 @@ void print_quadrature_table(double (*func)(double), double limit_low,
   auto alpha_k = alpha_k_order(A_k);
 
   // Calculate the richardson extrapolation
-  auto rich_error = richardson_extrapolation_error(A_k, alpha_k);
+  auto rich_error = richardson_extrapolation_error(A_k, expected_order);
 
   auto order_estimate = compute_order_estimate(rich_error);
-  println("Order estimate:{}", order_estimate);
 
   // Print the table
   // Table header
