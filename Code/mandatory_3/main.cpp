@@ -1,3 +1,40 @@
+#include "de_rule_table.h"
+#include "quadrature_table.h"
 #include <print>
 
-int main(int argc, char *argv[]) { return 0; }
+double eqn(double x) { return (cos(pow(x, 3)) * exp(-x)) / sqrt(x); }
+
+double eqn_derule(double x, double delta) {
+  // If x is small use delta instead to avoid division by zero
+  if (abs(x) < 1e-6) {
+    return (cos(pow(x, 3)) * exp(-x)) / sqrt(delta);
+  } else {
+    return (cos(pow(x, 3)) * exp(-x)) / sqrt(x);
+  }
+}
+double limit_low = 0.0;
+double limit_high = 4.0;
+
+int main() {
+  {
+    // Correct answer: ~1.43004
+    std::println("\n{:/^120}", " Extended Midpoint: ");
+    print_quadrature_table(eqn, limit_low, limit_high,
+                           IntegrationType::Midpoint);
+  }
+
+  {
+    // Correct answer: ~1.43004
+    std::println("\n{:/^120}", " DErule: ");
+    auto derule = DEruleTable(eqn_derule, limit_low, limit_high);
+    println("");
+    double diff = std::numeric_limits<double>::max();
+    double prev = 0;
+    while (abs(diff) > 1e-6) {
+      double cur = derule.next();
+      diff = cur - prev;
+      prev = cur;
+    }
+    derule.print_table();
+  }
+}

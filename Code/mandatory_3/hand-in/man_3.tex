@@ -1,0 +1,62 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+
+\title{Mandatory 2}
+\author{Mathias Balling}
+\date{\today}
+
+\begin{document}
+\maketitle
+% \tableofcontents
+% \newpage
+
+\section*{Exercise 5}
+NR3's implementation of \texttt{DErule} from "derule.h" is used as a base for solving the integral in question 5.3
+
+The equations for Extended Midpoint and DErule are set up as follows:
+\begin{minted}{cpp}
+double eqn(double x) { return (cos(pow(x, 3)) * exp(-x)) / sqrt(x); }
+
+double eqn_derule(double x, double delta) {
+  // If x is small use delta instead to avoid division by zero
+  if (abs(x) < 1e-6) {
+    return (cos(pow(x, 3)) * exp(-x)) / sqrt(delta);
+  } else {
+    return (cos(pow(x, 3)) * exp(-x)) / sqrt(x);
+  }
+}
+\end{minted}
+
+\subsection*{5.1}
+The analytical solution using Extended Midpoint is:
+$$
+\int_{a}^{b}\frac{\cos(x^3)\exp(-x)}{\sqrt{x}}dx
+$$
+$$
+\approx
+\frac{(b-a)}{N-1}\cdot\sum_{i=1}^{N-1}\left(
+  \frac{
+  \cos\left(\left(a+\Delta x\cdot i\right)^3\right)\exp\left(a+\Delta x\cdot i\right)
+}{
+  \sqrt{a+\Delta x\cdot i}
+}
+\right)+O\left(\frac{1}{N^2}\right)
+\quad{\text{where } \Delta x=\frac{(b-a)}{N}}
+$$
+
+$$
+=(b-a)\cdot\left(
+  \frac{
+  \cos\left(\left(a+\frac{b-a}{2}\right)^3\right)\exp\left(a+\frac{b-a}{2}\right)
+}{
+  \sqrt{a+\frac{b-a}{2}}
+}
+\right)+O\left(\frac{1}{4}\right)
+\qquad{\text{for } N=2}
+$$
+
+\subsection*{5.2}
+\subsection*{5.3}
+\end{document}
