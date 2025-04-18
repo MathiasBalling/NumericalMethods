@@ -6,6 +6,7 @@ double eqn(double x) { return (cos(pow(x, 3)) * exp(-x)) / sqrt(x); }
 
 double eqn_derule(double x, double delta) {
   // If x is small use delta instead to avoid division by zero
+  // TODO: How to deal with delta
   if (abs(x) < 1e-6) {
     return (cos(pow(x, 3)) * exp(-x)) / sqrt(delta);
   } else {
@@ -28,12 +29,14 @@ int main() {
     std::println("\n{:/^120}", " DErule: ");
     auto derule = DEruleTable(eqn_derule, limit_low, limit_high);
     println("");
+    double error = std::numeric_limits<double>::max();
     double diff = std::numeric_limits<double>::max();
     double prev = 0;
-    while (abs(diff) > 1e-6) {
-      double cur = derule.next();
-      diff = cur - prev;
-      prev = cur;
+    while (abs(diff) > 1e-03) {
+      double res = derule.next();
+      error = derule.get_error();
+      diff = res - prev;
+      prev = res;
     }
     derule.print_table();
   }

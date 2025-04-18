@@ -22,11 +22,11 @@ std::vector<double> alpha_k_order(const std::vector<double> &A_k) {
 std::vector<double>
 richardson_extrapolation_error(const std::vector<double> &A_k,
                                const double alpha_k_order) {
-  std::vector<double> A_R = {NAN, NAN}; // No error on the first two
-  for (size_t i = 2; i < A_k.size(); i++) {
+  std::vector<double> A_R = {NAN}; // No error on the first two
+  for (size_t i = 1; i < A_k.size(); i++) {
     const double A_1 = A_k[i - 1];
     const double A_2 = A_k[i];
-    double error = (A_2 - A_1) / (alpha_k_order - 1);
+    double error = (A_2 - A_1) / (pow(2, alpha_k_order) - 1);
     A_R.push_back(error);
   }
   return A_R;
@@ -100,7 +100,6 @@ double simpson(double (*func)(double), double limit_low, double limit_high,
 void print_quadrature_table(double (*func)(double), double limit_low,
                             double limit_high, IntegrationType type,
                             double accuracy = 1e-3) {
-  // TODO: Use accuracy to stop
   std::vector<double> A_k;
   std::vector<int> f_comps;
   double expected_order = 0.0;
@@ -163,7 +162,8 @@ void print_quadrature_table(double (*func)(double), double limit_low,
     } else if (i == 1) {
       std::println(
           "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
-          i + 1, A_k.at(i), A_diff_k.at(i), "", "", "", f_comps.at(i));
+          i + 1, A_k.at(i), A_diff_k.at(i), "", rich_error.at(i), "",
+          f_comps.at(i));
     } else {
       std::println(
           "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
