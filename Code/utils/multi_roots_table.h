@@ -46,9 +46,9 @@ void print_roots_table(std::vector<VecDoub> x_k) {
 
 template <class T>
 void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
-                  bool print_table = false) {
+                  Doub tolerance = 1.0e-8, bool print_table = false) {
   std::vector<VecDoub> x_k; // For table
-  const Doub TOLF = 1.0e-8, TOLMIN = 1.0e-12, STPMX = 100.0;
+  const Doub TOLF = tolerance, TOLMIN = 1.0e-12, STPMX = 100.0;
   const Doub TOLX = numeric_limits<Doub>::epsilon();
   Int i, j, its, n = x.size();
   Doub den, f, fold, stpmax, sum, temp, test;
@@ -95,9 +95,10 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
       x_k.push_back(x);
       if (print_table) {
         print_roots_table(x_k);
-      } else {
-        println("Done in {} iterations.", its);
       }
+      // else {
+      //   println("Done in {} iterations.", its);
+      // }
       return;
     }
     if (check) {
@@ -112,9 +113,10 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
       x_k.push_back(x);
       if (print_table) {
         print_roots_table(x_k);
-      } else {
-        println("Done in {} iterations.", its);
       }
+      // else {
+      //   println("Done in {} iterations.", its);
+      // }
       return;
     }
     test = 0.0;
@@ -127,9 +129,10 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
       x_k.push_back(x);
       if (print_table) {
         print_roots_table(x_k);
-      } else {
-        println("Done in {} iterations.", its);
       }
+      // else {
+      //   println("Done in {} iterations.", its);
+      // }
       return;
     }
     x_k.push_back(x);
