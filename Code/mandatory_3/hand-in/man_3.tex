@@ -3,7 +3,7 @@
 \input{preamble.tex}
 
 
-\title{Mandatory 2}
+\title{Mandatory 3}
 \author{Mathias Balling}
 \date{\today}
 
@@ -17,8 +17,10 @@ NR3's implementation of \texttt{DErule} from "derule.h" is used as a base for so
 
 The equations for Extended Midpoint and DErule are set up as follows:
 \begin{minted}{cpp}
+// For extended midpoint
 double eqn(double x) { return (cos(pow(x, 3)) * exp(-x)) / sqrt(x); }
 
+// For DErule
 double eqn_derule(double x, double delta) {
   // If x is small use delta instead to avoid division by zero
   if (abs(x) < 1e-6) {
@@ -36,32 +38,86 @@ $$
 $$
 $$
 \approx
-\frac{(b-a)}{N-1}\cdot\sum_{i=1}^{N-1}\left(
+  h\cdot \sum_{i=0}^{N-2}\left(
   \frac{
-  \cos\left(\left(a+\Delta x\cdot i\right)^3\right)\exp\left(a+\Delta x\cdot i\right)
+  \cos\left(\left(a+h\cdot i+\frac{h}{2}\right)^3\right)\exp\left(-(a+h\cdot i+\frac{h}{2})\right)
 }{
-  \sqrt{a+\Delta x\cdot i}
+  \sqrt{(a+h\cdot i+\frac{h}{2})}
 }
 \right)+O\left(\frac{1}{N^2}\right)
-\quad{\text{where } \Delta x=\frac{(b-a)}{N}}
+\quad\text{where } \begin{array}{l}
+  h=\frac{(b-a)}{N-1}\\
+\end{array}
 $$
 
 $$
 =(b-a)\cdot\left(
   \frac{
-  \cos\left(\left(a+\frac{b-a}{2}\right)^3\right)\exp\left(a+\frac{b-a}{2}\right)
+  \cos\left(\left(a+\frac{(b-a)}{2-1}\cdot 0+\frac{\frac{(b-a)}{2-1}}{2}\right)^3\right)\exp\left(-(a+\frac{(b-a)}{2-1}\cdot 0+\frac{\frac{(b-a)}{2-1}}{2})\right)
+}{
+  \sqrt{a+\frac{(b-a)}{2-1}\cdot 0+\frac{\frac{(b-a)}{2-1}}{2}}
+}
+\right)+O\left(\frac{1}{2^2}\right)
+\quad{\text{for } N=2}
+$$
+$$
+=(b-a)\cdot\left(
+  \frac{
+  \cos\left(\left(a+\frac{b-a}{2}\right)^3\right)\exp\left(-a-\frac{b-a}{2}\right)
 }{
   \sqrt{a+\frac{b-a}{2}}
 }
 \right)+O\left(\frac{1}{4}\right)
-\qquad{\text{for } N=2}
 $$
 
 \subsection*{5.2}
+The accuracy is computed as follows using Richardson Extrapolation Error:
+\begin{minted}{cpp}
+std::vector<double> 
+richardson_extrapolation_error(const std::vector<double> &A_k,
+                               const double alpha_k_order_expected) {
+  std::vector<double> A_R = {NAN}; // No error on the first
+  for (size_t i = 1; i < A_k.size(); i++) {
+    const double A_1 = A_k[i - 1];
+    const double A_2 = A_k[i];
+    // pow(2, alpha_k_order) as we use N-1=1,2,4,8
+    double error = (A_2 - A_1) / (pow(2, alpha_k_order_expected) - 1);
+    A_R.push_back(error);
+  }
+  return A_R;
+}
+\end{minted}
+
+The generated table is (using 'utils/quadrature\_table.h'):
+\begin{minted}{bash}
+////////////////////////////////////// Extended Midpoint: //////////////////////////////
+|  i   |      A(i)    | A(i-1)-A(i)  |  alpha^k   | Rich error | Order est. | f comps  |
+|------|--------------|--------------|------------|------------|------------|----------|
+|  1   |  -0.055695   |              |            |            |            |    1     |
+|  2   |   0.380737   |   -0.436432  |            |  0.145477  |            |    2     |
+|  3   |   0.629306   |   -0.248568  |  1.755781  |  0.082856  |   0.81211  |    4     |
+|  4   |   1.010516   |   -0.381209  |  0.652052  |  0.127069  |  -0.61693  |    8     |
+|  5   |   1.135519   |   -0.125003  |  3.049604  |  0.041667  |   1.60862  |    16    |
+|  6   |   1.214732   |  -0.0792131  |  1.578058  |  0.026404  |   0.65815  |    32    |
+|  7   |   1.277964   |  -0.0632325  |  1.252728  |  0.021077  |   0.32507  |    64    |
+|  8   |   1.322794   |  -0.0448294  |  1.410512  |  0.014943  |   0.49621  |   128    |
+|  9   |   1.354316   |  -0.0315223  |  1.422148  |  0.010507  |   0.50807  |   256    |
+|  10  |   1.376536   |  -0.0222198  |  1.418658  |  0.007406  |   0.50452  |   512    |
+|  11  |   1.392222   |  -0.0156861  |  1.416521  |  0.005228  |   0.50235  |   1024   |
+|  12  |   1.403305   |  -0.0110825  |  1.415391  |  0.003694  |   0.50120  |   2048   |
+|  13  |   1.411138   |  -0.0078332  |  1.414810  |  0.002611  |   0.50060  |   4096   |
+|  14  |   1.416676   |  -0.0055377  |  1.414514  |  0.001845  |   0.50030  |   8192   |
+|  15  |   1.420591   |  -0.0039153  |  1.414364  |  0.001305  |   0.50015  |  16384   |
+|  16  |   1.423360   |  -0.0027684  |  1.414289  |  0.000922  |   0.50007  |  32768   |
+\end{minted}
+
+The function computations for each N-1=pow(2,i) is shown in the table.
+
 \subsection*{5.3}
 DErule found the integral to be:
 $$
-1.43004
+1.4300433455
 $$
-using XXX f-calculation.
+using 127 f-calculation.
+
 \end{document}

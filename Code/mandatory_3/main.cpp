@@ -21,7 +21,7 @@ int main() {
     // Correct answer: ~1.43004
     std::println("\n{:/^120}", " Extended Midpoint: ");
     print_quadrature_table(eqn, limit_low, limit_high,
-                           IntegrationType::Midpoint);
+                           IntegrationType::Midpoint, 1e-3);
   }
 
   {

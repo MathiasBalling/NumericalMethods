@@ -7,7 +7,7 @@
 #include <vector>
 enum class IntegrationType { Midpoint, Trapezoidal, Simpson };
 
-std::vector<double> alpha_k_order(const std::vector<double> &A_k) {
+std::vector<double> alpha_k_order_computed(const std::vector<double> &A_k) {
   std::vector<double> alpha_k = {NAN, NAN}; // No error on the first two
   for (size_t i = 2; i < A_k.size(); i++) {
     const double A_1 = A_k[i - 2];
@@ -21,36 +21,40 @@ std::vector<double> alpha_k_order(const std::vector<double> &A_k) {
 
 std::vector<double>
 richardson_extrapolation_error(const std::vector<double> &A_k,
-                               const double alpha_k_order) {
-  std::vector<double> A_R = {NAN}; // No error on the first two
+                               const double alpha_k_order_expected) {
+  std::vector<double> A_R = {NAN}; // No error on the first
   for (size_t i = 1; i < A_k.size(); i++) {
     const double A_1 = A_k[i - 1];
     const double A_2 = A_k[i];
-    double error = (A_2 - A_1) / (pow(2, alpha_k_order) - 1);
+    double error =
+        (A_2 - A_1) / (pow(2, alpha_k_order_expected) -
+                       1); // pow(2, alpha_k_order) as we use N-1=1,2,4,8
     A_R.push_back(error);
   }
   return A_R;
 }
 
-double richardson_extrapolation_error_current(const std::vector<double> &A_k,
-                                              const double alpha_k_order) {
+double
+richardson_extrapolation_error_current(const std::vector<double> &A_k,
+                                       const double alpha_k_order_expected) {
   double error = std::numeric_limits<double>::max();
   if (A_k.size() < 2) {
     return error;
   } else {
     const double A_1 = A_k[A_k.size() - 2];
     const double A_2 = A_k[A_k.size() - 1];
-    error = (A_2 - A_1) / (alpha_k_order - 1);
+    // FIX: Only use expected if compute_order_estimate is good.
+    error = (A_2 - A_1) / (pow(2, alpha_k_order_expected) - 1);
     return error;
   }
 }
 
 std::vector<double>
-compute_order_estimate(const std::vector<double> &rich_error) {
+compute_order_estimate(const std::vector<double> &alpha_k_computed) {
   std::vector<double> order_estimate = {NAN,
                                         NAN}; // No order for first two entries
-  for (size_t i = 2; i < rich_error.size(); i++) {
-    double p = log(std::abs(rich_error[i - 1] / rich_error[i])) / log(2);
+  for (size_t i = 2; i < alpha_k_computed.size(); i++) {
+    double p = log2(alpha_k_computed[i]);
     order_estimate.push_back(p);
   }
   return order_estimate;
@@ -99,7 +103,7 @@ double simpson(double (*func)(double), double limit_low, double limit_high,
 
 void print_quadrature_table(double (*func)(double), double limit_low,
                             double limit_high, IntegrationType type,
-                            double accuracy = 1e-3) {
+                            double accuracy = 1e-10) {
   std::vector<double> A_k;
   std::vector<int> f_comps;
   double expected_order = 0.0;
@@ -110,7 +114,7 @@ void print_quadrature_table(double (*func)(double), double limit_low,
     switch (type) {
     case IntegrationType::Midpoint:
       A_k.push_back(midpoint(func, limit_low, limit_high, its));
-      f_comps.push_back(its + 1);
+      f_comps.push_back(its);
       expected_order = 2.0;
       break;
     case IntegrationType::Trapezoidal:
@@ -138,12 +142,12 @@ void print_quadrature_table(double (*func)(double), double limit_low,
   }
 
   // Calculate the orders
-  auto alpha_k = alpha_k_order(A_k);
+  auto alpha_k_computed = alpha_k_order_computed(A_k);
 
   // Calculate the richardson extrapolation
   auto rich_error = richardson_extrapolation_error(A_k, expected_order);
 
-  auto order_estimate = compute_order_estimate(rich_error);
+  auto order_estimate = compute_order_estimate(alpha_k_computed);
 
   // Print the table
   // Table header
@@ -157,8 +161,8 @@ void print_quadrature_table(double (*func)(double), double limit_low,
   for (size_t i = 0; i < A_k.size(); i++) {
     if (i == 0) {
       std::println(
-          "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
-          i + 1, A_k.at(i), "", "", "", "", f_comps.at(i));
+          "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|", i,
+          A_k.at(i), "", "", "", "", f_comps.at(i));
     } else if (i == 1) {
       std::println(
           "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
@@ -167,8 +171,8 @@ void print_quadrature_table(double (*func)(double), double limit_low,
     } else {
       std::println(
           "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
-          i + 1, A_k.at(i), A_diff_k.at(i), alpha_k.at(i), rich_error.at(i),
-          order_estimate.at(i), f_comps.at(i));
+          i + 1, A_k.at(i), A_diff_k.at(i), alpha_k_computed.at(i),
+          rich_error.at(i), order_estimate.at(i), f_comps.at(i));
     }
   }
 }
