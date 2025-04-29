@@ -15,6 +15,7 @@ VecDoub derivs(const Doub x, VecDoub_I &y) {
   return dydx;
 }
 
+// Euler method
 VecDoub
 first_order_runge_kuttea_method(double low, double high, int steps, VecDoub_I y,
                                 VecDoub derivs(const Doub x, VecDoub_I &y)) {
@@ -25,16 +26,15 @@ first_order_runge_kuttea_method(double low, double high, int steps, VecDoub_I y,
     auto y_n_next = y_n + h * derivs(x, y_n);
     y_n = y_n_next;
   }
-  // Euler method
   return y_n;
 }
 
+// Midpoint method
 VecDoub second_order_runge_kuttea_method(double low, double high, int steps,
                                          VecDoub_I &y,
                                          VecDoub derivs(const Doub x,
                                                         VecDoub_I &y)) {
   const double h = (high - low) / (double)steps;
-  // Midpoint method
   VecDoub y_n = y;
   for (double x_n = low; x_n < high; x_n += h) {
     auto k1 = h * derivs(x_n, y_n);
@@ -45,10 +45,25 @@ VecDoub second_order_runge_kuttea_method(double low, double high, int steps,
   return y_n;
 }
 
-VecDoub third_order_runge_kuttea_method(double low, double high, int steps,
-                                        VecDoub_I &y,
-                                        VecDoub derivs(const Doub x,
-                                                       VecDoub_I &y)) {
+VecDoub fourth_order_runge_kuttea_method(double low, double high, int steps,
+                                         VecDoub_I &y,
+                                         VecDoub derivs(const Doub x,
+                                                        VecDoub_I &y)) {
+  const double h = (high - low) / (double)steps;
+  VecDoub y_n = y;
+  for (double x_n = low; x_n < high; x_n += h) {
+    auto k1 = h * derivs(x_n, y_n);
+    auto k2 = h * derivs(x_n + 0.5 * h, y_n + 0.5 * k1);
+    auto k3 = h * derivs(x_n + 0.5 * h, y_n + 0.5 * k2);
+    auto k4 = h * derivs(x_n + h, y_n + k2);
+    auto y_n_next = y_n + 1. / 6. * (k1 + 2 * k2 + 2 * k3 + k4);
+    y_n = y_n_next;
+  }
+  return y_n;
+}
+
+VecDoub trapezoidal(double low, double high, int steps, VecDoub_I &y,
+                    VecDoub derivs(const Doub x, VecDoub_I &y)) {
   // Trapezoidal method
   const double h = (high - low) / (double)steps;
   VecDoub y_n = y;
@@ -84,13 +99,13 @@ VecDoub leap_frog_method(double low, double high, int steps, VecDoub_I &y,
 
 int main() {
   {
-    std::println("\n1nd order Euler method:");
+    std::println("\n1nd order (Euler method):");
     double vals[2] = {1.0, 1.0};
     const VecDoub y(2, vals);
     double low = 0.0;
     double high = 10.0;
     std::vector<VecDoub> result;
-    for (int n = 5; n <= 20000; n *= 2) {
+    for (int n = 5; n <= 1000; n *= 2) {
       auto y_n = y;
       y_n = first_order_runge_kuttea_method(low, high, n, y_n, derivs);
       util::print(y_n, std::format("1st order with h={}", (high - low) / n));
@@ -98,7 +113,7 @@ int main() {
   }
 
   {
-    std::println("\n2nd order Midpoint method:");
+    std::println("\n2nd order (Midpoint method):");
     double vals[2] = {1.0, 1.0};
     const VecDoub y(2, vals);
     double low = 0.0;
@@ -113,7 +128,22 @@ int main() {
   }
 
   {
-    std::println("\n3nd order Trapezoidal method:");
+    std::println("\n4nd order:");
+    double vals[2] = {1.0, 1.0};
+    const VecDoub y(2, vals);
+    double low = 0.0;
+    double high = 10.0;
+    std::vector<VecDoub> result;
+    for (int n = 5; n <= 1000; n *= 2) {
+      const auto res =
+          fourth_order_runge_kuttea_method(low, high, n, y, derivs);
+      util::print(res,
+                  std::format("4st order with h={}", (high - low) / (double)n));
+    }
+  }
+
+  {
+    std::println("\nTrapezoidal method:");
     double vals[2] = {1.0, 1.0};
     const VecDoub y(2, vals);
     double low = 0.0;
@@ -121,14 +151,14 @@ int main() {
     std::vector<VecDoub> result;
     for (int n = 5; n <= 1000; n *= 2) {
       auto y_n = y;
-      VecDoub res = third_order_runge_kuttea_method(low, high, n, y_n, derivs);
-      util::print(res,
-                  std::format("3st order with h={}", (high - low) / (double)n));
+      VecDoub res = trapezoidal(low, high, n, y_n, derivs);
+      util::print(
+          res, std::format("Trapezoidal with h={}", (high - low) / (double)n));
     }
   }
 
   {
-    std::println("\n4nd order Leap Frog method:");
+    std::println("\nLeap Frog method:");
     double vals[2] = {1.0, 1.0};
     const VecDoub y(2, vals);
     double low = 0.0;
@@ -138,7 +168,7 @@ int main() {
       auto y_n = y;
       VecDoub res = leap_frog_method(low, high, n, y_n, derivs);
       util::print(res,
-                  std::format("4st order with h={}", (high - low) / (double)n));
+                  std::format("Leap Frog with h={}", (high - low) / (double)n));
     }
   }
 }
