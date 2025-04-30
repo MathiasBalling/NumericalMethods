@@ -9,8 +9,6 @@ add_compile_options(-Wall -Wextra -pedantic)
 include_directories(Numerical-Recipes/)
 include_directories(utils/)
 
-# External libraries
-add_subdirectory(external/)
 
 add_subdirectory(1/)
 add_subdirectory(2/)
@@ -24,6 +22,8 @@ add_subdirectory(9/)
 add_subdirectory(10/)
 add_subdirectory(11/)
 add_subdirectory(12/)
+add_subdirectory(13/)
+add_subdirectory(14/)
 add_subdirectory(mandatory_1/)
 add_subdirectory(mandatory_2/)
 add_subdirectory(mandatory_3/)

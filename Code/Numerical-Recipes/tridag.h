@@ -12,8 +12,10 @@ void tridag(VecDoub_I &a, VecDoub_I &b, VecDoub_I &c, VecDoub_I &r,
   for (j = 1; j < n; j++) {
     gam[j] = c[j - 1] / bet;
     bet = b[j] - a[j] * gam[j];
-    if (bet == 0.0)
+    if (bet == 0.0) {
+      std::println("i={}", j);
       throw("Error 2 in tridag");
+    }
     u[j] = (r[j] - a[j] * u[j - 1]) / bet;
   }
   for (j = (n - 2); j >= 0; j--)
