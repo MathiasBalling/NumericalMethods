@@ -49,7 +49,7 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
                   Doub tolerance = 1.0e-8, bool print_table = false) {
   std::vector<VecDoub> x_k; // For table
   const Doub TOLF = tolerance, TOLMIN = 1.0e-12, STPMX = 100.0;
-  const Doub TOLX = numeric_limits<Doub>::epsilon();
+  const Doub TOLX = std::numeric_limits<Doub>::epsilon();
   Int i, j, its, n = x.size();
   Doub den, f, fold, stpmax, sum, temp, test;
   VecDoub g(n), p(n), xold(n);

@@ -36,7 +36,7 @@ VecDoub vecfunc(VecDoub_I q) {
 int main() {
 
   {
-    println("\n{:/^120}", " n=5.0 ");
+    std::println("\n{:/^120}", " n=5.0 ");
     n = 5.0;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
     Doub qvals[8] = {29.0, 29.1, 5.0, 15.0, 1.0, 0.5, 40.0, 100.0};
@@ -46,11 +46,11 @@ int main() {
     auto func = vecfunc;
     newton_multi(q, check, func);
     util::print(q, "q roots with newton");
-    println("Local minimum: {}", check);
+    std::println("Local minimum: {}", check);
   }
 
   {
-    println("\n{:/^120}", " n=2.0 ");
+    std::println("\n{:/^120}", " n=2.0 ");
     n = 2.0;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
     Doub qvals[8] = {27.0, 27.1, 2.0, 14.0, 1.0, 0.5, 40.0, 100.0};
@@ -60,11 +60,11 @@ int main() {
     auto func = vecfunc;
     newton_multi(q, check, func);
     util::print(q, "q roots with newton");
-    println("Local minimum: {}", check);
+    std::println("Local minimum: {}", check);
   }
 
   {
-    println("\n{:/^120}", " n=1.0 ");
+    std::println("\n{:/^120}", " n=1.0 ");
     n = 1.0;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
     Doub qvals[8] = {26.0, 26.1, 1.0, 13.0, 0.5, 0.5, 40.0, 100.0};
@@ -74,11 +74,11 @@ int main() {
     auto func = vecfunc;
     newton_multi(q, check, func);
     util::print(q, "q roots with newton");
-    println("Local minimum: {}", check);
+    std::println("Local minimum: {}", check);
   }
 
   {
-    println("\n{:/^120}", " n=0.5 ");
+    std::println("\n{:/^120}", " n=0.5 ");
     n = 0.5;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
     Doub qvals[8] = {26.0, 26.1, 0.5, 13.0, 0.2, 0.1, 40.0, 100.0};
@@ -88,11 +88,11 @@ int main() {
     auto func = vecfunc;
     newton_multi(q, check, func);
     util::print(q, "q roots with newton");
-    println("Local minimum: {}", check);
+    std::println("Local minimum: {}", check);
   }
 
   {
-    println("\n{:/^120}", " n=0.2 ");
+    std::println("\n{:/^120}", " n=0.2 ");
     n = 0.2;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
     Doub qvals[8] = {25.5, 25.6, 0.2, 12.0, 0.1, 0.05, 40.0, 100.0};
@@ -102,11 +102,11 @@ int main() {
     auto func = vecfunc;
     newton_multi(q, check, func);
     util::print(q, "q roots with newton");
-    println("Local minimum: {}", check);
+    std::println("Local minimum: {}", check);
   }
 
   {
-    println("\n{:/^120}", " n=0.1 ");
+    std::println("\n{:/^120}", " n=0.1 ");
     n = 0.1;
     // q=[L0, L, p, x, theta, phi/varphi, a, H]
     Doub qvals[8] = {25.5, 25.6, 0.1, 12.0, 0.1, 0.05, 40.0, 100.0};
@@ -116,6 +116,6 @@ int main() {
     auto func = vecfunc;
     newton_multi(q, check, func);
     util::print(q, "q roots with newton");
-    println("Local minimum: {}", check);
+    std::println("Local minimum: {}", check);
   }
 }

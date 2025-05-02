@@ -96,9 +96,9 @@ int main() {
   // Load data from FilipData.dat
   VecDoub xFilip(82);
   VecDoub yFilip(82);
-  ifstream Filip("../../../2/FilipData.dat");
+  std::ifstream Filip("../../../2/FilipData.dat");
   if (!Filip) {
-    cerr << "Error opening FilipData.dat" << endl;
+    std::println(stderr, "Error opening FilipData.dat");
     return 1;
   }
   for (int i = 0; i < 82; i++) {
@@ -109,9 +109,9 @@ int main() {
   // Load data from PontiusData.dat
   VecDoub xPont(40);
   VecDoub yPont(40);
-  ifstream Pont("../../../2/PontiusData.dat");
+  std::ifstream Pont("../../../2/PontiusData.dat");
   if (!Pont) {
-    cerr << "Error opening PontiusData.dat" << endl;
+    std::println(stderr, "Error opening PontiusData.dat");
     return 1;
   }
   for (int i = 0; i < 40; i++) {

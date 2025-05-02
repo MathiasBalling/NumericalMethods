@@ -4,7 +4,7 @@
 #include <print>
 auto test() { return 0; }
 
-int main(int argc, char *argv[]) {
+int main() {
   // Exercise 1:
   // Solve A x = b using LU decomposition, and print the result.
 
@@ -38,24 +38,24 @@ int main(int argc, char *argv[]) {
   LUdcmp_solver.decompose(L, U);
 
   // print x
-  println("A:");
+  std::println("A:");
   util::print(A);
 
-  println("Lower:");
+  std::println("Lower:");
   util::print(L);
 
-  println("Upper:");
+  std::println("Upper:");
   util::print(U);
 
-  println("b:");
+  std::println("b:");
   util::print(b);
 
-  println("x:");
+  std::println("x:");
   util::print(x);
 
   LUdcmp_solver.mprove(b, x);
 
-  println("x improved:");
+  std::println("x improved:");
   util::print(x);
   return 0;
 }

@@ -38,20 +38,20 @@ std::pair<VecDoub, VecDoub> solve_SVD(VecDoub x, VecDoub y, int parameters,
     double residual_error = linreg_error::calculate_residual_error(A, b, x_sol);
     double r_fitting =
         linreg_error::calculate_random_fitting(A.nrows(), A.ncols());
-    println("Residual error: {}", residual_error);
-    println("Random fitting: {}", r_fitting);
+    std::println("Residual error: {}", residual_error);
+    std::println("Random fitting: {}", r_fitting);
     util::print(sol_sigma, "Std. dev.");
 
     ////////////////////////////////////////////////////////
     // With updated sigma
     auto r = (A * x_sol) - b;
     util::print(r, "r");
-    println("\n{:/^100}", " with updated sigma ");
+    std::println("\n{:/^100}", " with updated sigma ");
     double sigma;
     MatDoub A_sigma = A;
     VecDoub b_sigma = b;
     for (int i = 0; i < A.nrows(); i++) {
-      sigma = max(1.0, abs(r[i]));
+      sigma = std::max(1.0, abs(r[i]));
       for (int j = 0; j < A.ncols(); j++) {
         A_sigma[i][j] = A_sigma[i][j] / sigma;
       }
@@ -77,13 +77,13 @@ std::pair<VecDoub, VecDoub> solve_SVD(VecDoub x, VecDoub y, int parameters,
         linreg_error::calculate_residual_error(A_sigma, b_sigma, x_sol_sigma);
     double r_fitting_sigma =
         linreg_error::calculate_random_fitting(A.nrows(), A.ncols());
-    println("Residual error sigma: {}", residual_error_sigma);
-    println("Random fitting sigma: {}", r_fitting_sigma);
+    std::println("Residual error sigma: {}", residual_error_sigma);
+    std::println("Random fitting sigma: {}", r_fitting_sigma);
     util::print(sol_sigma_sigma, "Std. dev. with sigma");
-    return make_pair(x_sol, x_sol_sigma);
+    return std::make_pair(x_sol, x_sol_sigma);
   } catch (...) {
     std::println("Error in SVD");
-    return make_pair(VecDoub(0), VecDoub(0));
+    return std::make_pair(VecDoub(0), VecDoub(0));
   }
 }
 
@@ -91,9 +91,9 @@ int main() {
   // Load data from FilipData.dat
   VecDoub xFilip(82);
   VecDoub yFilip(82);
-  ifstream Filip("../../../3/FilipData.dat");
+  std::ifstream Filip("../../../3/FilipData.dat");
   if (!Filip) {
-    cerr << "Error opening FilipData.dat" << endl;
+    std::println(stderr, "Error opening FilipData.dat");
     return 1;
   }
   for (int i = 0; i < 82; i++) {
@@ -107,9 +107,9 @@ int main() {
   VecDoub xPont(40);
   VecDoub yPont(40);
   VecDoub sigmaPont(40);
-  ifstream Pont("../../../3/PontiusData.dat");
+  std::ifstream Pont("../../../3/PontiusData.dat");
   if (!Pont) {
-    cerr << "Error opening PontiusData.dat" << endl;
+    std::println(stderr, "Error opening PontiusData.dat");
     return 1;
   }
   for (int i = 0; i < 40; i++) {
@@ -120,11 +120,11 @@ int main() {
   // util::print(yPont);
 
   // With sigma = 1
-  println("\n{:/^100}", " Pont ");
+  std::println("\n{:/^100}", " Pont ");
   auto sol_pont = solve_SVD(xPont, yPont, 3, 0.1);
   util::print(sol_pont.first, "Pont");
   util::print(sol_pont.second, "Pont sigma");
-  println("\n{:/^100}", " Filip ");
+  std::println("\n{:/^100}", " Filip ");
   auto sol_filip = solve_SVD(xFilip, yFilip, 11, 0.001);
   util::print(sol_filip.first, "Filip");
   util::print(sol_filip.second, "Filip sigma");

@@ -8,11 +8,10 @@
 double richardson_extrapolation_error(const double A_k_last,
                                       const double A_k_current,
                                       const double alpha_k_order_expected) {
+  // pow(2, alpha_k_order) as we double N each time
   const double A_1 = A_k_last;
   const double A_2 = A_k_current;
-  double error =
-      (A_2 - A_1) / (pow(2, alpha_k_order_expected) -
-                     1); // pow(2, alpha_k_order) as we double N each time
+  double error = (A_2 - A_1) / (alpha_k_order_expected - 1);
   return error;
 }
 
@@ -129,7 +128,6 @@ VecDoub finite_difference_method(int N, double target_x, double a, double b,
       util::print(y_last, "y_last");
       std::println("last_N: {} {}", N_last, index_last);
       std::println("target_last_estimate: {}", target_last_estimate);
-      // double current_target_estimate = y_estimates.back();
       should_stop = true;
     }
   }

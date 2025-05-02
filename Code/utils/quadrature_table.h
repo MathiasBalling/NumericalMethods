@@ -26,9 +26,7 @@ richardson_extrapolation_error(const std::vector<double> &A_k,
   for (size_t i = 1; i < A_k.size(); i++) {
     const double A_1 = A_k[i - 1];
     const double A_2 = A_k[i];
-    double error =
-        (A_2 - A_1) / (pow(2, alpha_k_order_expected) -
-                       1); // pow(2, alpha_k_order) as we use N-1=1,2,4,8
+    double error = (A_2 - A_1) / (alpha_k_order_expected - 1);
     A_R.push_back(error);
   }
   return A_R;
@@ -44,7 +42,7 @@ richardson_extrapolation_error_current(const std::vector<double> &A_k,
     const double A_1 = A_k[A_k.size() - 2];
     const double A_2 = A_k[A_k.size() - 1];
     // FIX: Only use expected if compute_order_estimate is good.
-    error = (A_2 - A_1) / (pow(2, alpha_k_order_expected) - 1);
+    error = (A_2 - A_1) / (alpha_k_order_expected - 1);
     return error;
   }
 }
@@ -130,7 +128,7 @@ void print_quadrature_table(double (*func)(double), double limit_low,
     default:
       throw("Unknown integration type");
     }
-    error = richardson_extrapolation_error_current(A_k, expected_order);
+    error = richardson_extrapolation_error_current(A_k, pow(2, expected_order));
     i += 1;
   }
 
@@ -145,7 +143,9 @@ void print_quadrature_table(double (*func)(double), double limit_low,
   auto alpha_k_computed = alpha_k_order_computed(A_k);
 
   // Calculate the richardson extrapolation
-  auto rich_error = richardson_extrapolation_error(A_k, expected_order);
+  auto rich_error = richardson_extrapolation_error(
+      A_k,
+      pow(2, expected_order)); // pow(2, expected_order) as we use N-1=1,2,4,8
 
   auto order_estimate = compute_order_estimate(alpha_k_computed);
 

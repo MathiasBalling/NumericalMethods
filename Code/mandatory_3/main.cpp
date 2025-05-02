@@ -28,7 +28,7 @@ int main() {
     // Correct answer: ~1.43004
     std::println("\n{:/^120}", " DErule: ");
     auto derule = DEruleTable(eqn_derule, limit_low, limit_high);
-    println("");
+    std::println("");
     double error = std::numeric_limits<double>::max();
     double diff = std::numeric_limits<double>::max();
     double prev = 0;

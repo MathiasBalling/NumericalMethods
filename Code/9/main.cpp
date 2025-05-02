@@ -33,7 +33,7 @@ double eqn_4(double x, double delta) {
 int main(int argc, char *argv[]) {
   {
     auto derule = DEruleTable(eqn_1, 0.0, 1.0);
-    println("");
+    std::println("");
     double diff = std::numeric_limits<double>::max();
     double prev = 0;
     while (abs(diff) > 1e-10) {
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
   {
     auto derule = DEruleTable(eqn_2, 0.0, 1.0);
-    println("");
+    std::println("");
     double diff = std::numeric_limits<double>::max();
     double prev = 0;
     while (abs(diff) > 1e-10) {
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 
   {
     auto derule = DEruleTable(eqn_3, 0.0, 1.0, 4.3);
-    println("");
+    std::println("");
     double diff = std::numeric_limits<double>::max();
     double prev = 0;
     while (abs(diff) > 1e-10) {
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 
   {
     auto derule = DEruleTable(eqn_4, 0.0, 1.0);
-    println("");
+    std::println("");
     double diff = std::numeric_limits<double>::max();
     double prev = 0;
     while (abs(diff) > 1e-10) {

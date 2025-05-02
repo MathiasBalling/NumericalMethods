@@ -2,33 +2,31 @@
 #define UTILITIES_H_
 
 #include "nr3.h"
-#include <iostream>
+#include <print>
 #include <string>
 
 namespace util {
-void print(MatDoub mat, string symbol = "") {
+void print(MatDoub mat, std::string symbol = "") {
   if (symbol.compare(""))
-    std::cout << symbol << "	Matrix " << mat.nrows() << "x" << mat.ncols()
-              << ":" << endl;
+    std::println("{} , mat_size {}x{}", symbol, mat.nrows(), mat.ncols());
 
   for (int m = 0; m < mat.nrows(); m++) {
     for (int n = 0; n < mat.ncols(); n++) {
-      std::cout << setw(15) << mat[m][n] << "\t";
+      std::print("{:15}\t", mat[m][n]);
     }
-    std::cout << endl;
+    std::println("");
   }
-  std::cout << endl;
+  std::println("");
 }
 
-void printDiag(MatDoub mat, string symbol = "") {
+void printDiag(MatDoub mat, std::string symbol = "") {
   if (symbol.compare(""))
-    std::cout << symbol << "	MatrixDiag " << mat.nrows() << "x"
-              << mat.ncols() << ":" << endl;
+    std::println("{} , mat_diag_size {}x{}", symbol, mat.nrows(), mat.ncols());
   double nmax = mat.nrows() < mat.nrows() ? mat.nrows() : mat.nrows();
   for (int n = 0; n < nmax; n++) {
-    std::cout << setw(15) << mat[n][n] << "\t";
+    std::print("{:15}\t", mat[n][n]);
   }
-  std::cout << endl;
+  std::println("");
 }
 
 MatDoub diag(VecDoub &V) {
@@ -45,14 +43,15 @@ MatDoub diag(VecDoub &V) {
   return M;
 }
 
-void print(VecDoub vec, string symbol = "") {
-  if (symbol.compare(""))
-    std::cout << symbol << "	Vector " << vec.size() << "D:" << endl;
+void print(VecDoub vec, std::string symbol = "") {
+  if (symbol.compare("")) {
+    std::println("{} , vec_size {}", symbol, vec.size());
+  }
 
   for (int m = 0; m < vec.size(); m++) {
-    std::cout << setw(15) << vec[m];
+    std::print("{:15}\t", vec[m]);
   }
-  std::cout << endl;
+  std::println("");
 }
 
 MatDoub Transpose(const MatDoub &Mat) {
@@ -78,9 +77,8 @@ double norm(VecDoub &v) {
 
 MatDoub operator*(const MatDoub &A1, const MatDoub &A2) {
   if (A1.ncols() != A2.nrows()) {
-    cerr << "in prod: the number of rows in A1 is not equal to the number of "
-            "cols in A2"
-         << endl;
+    std::println(stderr, "in prod: the number of rows in A1 is not equal to "
+                         "the number of cols in A2");
   }
 
   MatDoub res(A1.nrows(), A2.ncols());
@@ -98,9 +96,8 @@ MatDoub operator*(const MatDoub &A1, const MatDoub &A2) {
 
 VecDoub operator*(const MatDoub &A, const VecDoub &b) {
   if (A.ncols() != b.size()) {
-    cerr << "in prod: the number of rows in A is not equal to the size of "
-            "vector b"
-         << endl;
+    std::println(stderr, "in prod: the number of rows in A is not equal to the "
+                         "size of vector b");
   }
 
   VecDoub res(A.nrows());
@@ -116,9 +113,9 @@ VecDoub operator*(const MatDoub &A, const VecDoub &b) {
 
 VecDoub operator-(const VecDoub &v1, const VecDoub &v2) {
   if (v1.size() != v2.size()) {
-    std::cout << "in minus: the size of  cclv1 is not equal to the size of "
-                 "vector b"
-              << std::endl;
+    std::println(
+        stderr,
+        "in minus: the size of  cclv1 is not equal to the size of vector b");
   }
   VecDoub res(v1.size());
   for (int i = 0; i < v1.size(); i++) {
@@ -129,9 +126,8 @@ VecDoub operator-(const VecDoub &v1, const VecDoub &v2) {
 
 VecDoub operator+(const VecDoub &a, const VecDoub &b) {
   if (a.size() != b.size()) {
-    std::cout << "in prod: the number of rows in A is not equal to the size of "
-                 "vector b"
-              << std::endl;
+    std::println(stderr, "in prod: the number of rows in A is not equal to the "
+                         "size of vector b");
   }
   VecDoub res(a.size());
   for (int i = 0; i < a.size(); i++) {
