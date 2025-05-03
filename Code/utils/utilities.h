@@ -12,7 +12,7 @@ void print(MatDoub mat, std::string symbol = "") {
 
   for (int m = 0; m < mat.nrows(); m++) {
     for (int n = 0; n < mat.ncols(); n++) {
-      std::print("{:15}\t", mat[m][n]);
+      std::print("{:^15}\t", mat[m][n]);
     }
     std::println("");
   }
@@ -24,7 +24,7 @@ void printDiag(MatDoub mat, std::string symbol = "") {
     std::println("{} , mat_diag_size {}x{}", symbol, mat.nrows(), mat.ncols());
   double nmax = mat.nrows() < mat.nrows() ? mat.nrows() : mat.nrows();
   for (int n = 0; n < nmax; n++) {
-    std::print("{:15}\t", mat[n][n]);
+    std::print("{:^15}\t", mat[n][n]);
   }
   std::println("");
 }
@@ -49,7 +49,7 @@ void print(VecDoub vec, std::string symbol = "") {
   }
 
   for (int m = 0; m < vec.size(); m++) {
-    std::print("{:15}\t", vec[m]);
+    std::print("{:^15}\t", vec[m]);
   }
   std::println("");
 }
