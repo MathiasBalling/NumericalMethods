@@ -20,6 +20,7 @@ int main() {
     const VecDoub res = derivs(t, v);
     util::print(res, "v1'(0), v2'(0), v3'(0)");
   }
+
   {
     std::println("\n{:/^80}", " ii ");
     double vals[3] = {1.0, 2.0, 3.0};
@@ -33,5 +34,16 @@ int main() {
       util::print(res, std::format("Trapezoidal with N={}, h={}", N,
                                    (x_high - x_low) / (double)N));
     }
+  }
+
+  {
+    std::println("\n{:/^80}", " ii ");
+    double vals[3] = {1.0, 2.0, 3.0};
+    const VecDoub v(3, vals);
+    double x_low = 0.0;
+    double x_high = 5.0;
+    std::vector<VecDoub> result;
+    print_ode_table(x_low, x_high, 50, v, derivs, ODEMethod::TRAPEZOIDAL, 0,
+                    800);
   }
 }

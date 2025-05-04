@@ -6,8 +6,9 @@ void tridag(VecDoub_I &a, VecDoub_I &b, VecDoub_I &c, VecDoub_I &r,
   Int j, n = a.size();
   Doub bet;
   VecDoub gam(n);
-  if (b[0] == 0.0)
+  if (b[0] == 0.0) {
     throw("Error 1 in tridag");
+  }
   u[0] = r[0] / (bet = b[0]);
   for (j = 1; j < n; j++) {
     gam[j] = c[j - 1] / bet;

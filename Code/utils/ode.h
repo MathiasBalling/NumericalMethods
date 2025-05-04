@@ -142,7 +142,7 @@ richardson_extrapolation_error_current(const std::vector<VecDoub> &A_k,
   for (size_t i = 0; i < A_k[0].size(); i++) {
     const double A_1 = A_k[A_k.size() - 2][i];
     const double A_2 = A_k[A_k.size() - 1][i];
-    // FIX: Only use expected if compute_order_estimate is good.
+    // WARN:  Only use expected if compute_order_estimate is good.
     errors[i] = (A_2 - A_1) / (alpha_k_order_expected - 1);
   }
   return errors;
@@ -221,7 +221,7 @@ void print_ode_table(const double low, const double high,
       }
       if (biggest_error < accuracy) {
         should_stop = true;
-      } else if (its > max_steps) {
+      } else if (its >= max_steps) {
         should_stop = true;
       }
     }
