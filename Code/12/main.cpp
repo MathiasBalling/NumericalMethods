@@ -4,28 +4,80 @@
 #include <print>
 #include <vector>
 
-VecDoub target_values(std::vector<VecDoub> y_estimates, const double target_x,
-                      const double x_low, const double x_high) {
+std::vector<double> target_values(std::vector<VecDoub> y_estimates,
+                                  const double target_x, const double x_low,
+                                  const double x_high) {
   const auto size = y_estimates.size();
-  VecDoub estimates(size);
+  std::vector<double> estimates;
   for (size_t i = 0; i < size; i++) {
     const size_t N = y_estimates[i].size() - 1;
     const double h = (x_high - x_low) / (double)N;
     const size_t index = (target_x - x_low) / h;
-    estimates[i] = y_estimates[i][index];
+    estimates.push_back(y_estimates[i][index]);
   }
   return estimates;
 }
 
+std::vector<double> alpha_k_order_computed(const std::vector<double> &A_k) {
+  std::vector<double> alpha_k = {NAN, NAN}; // No error on the first two
+  for (size_t i = 2; i < A_k.size(); i++) {
+    const double A_1 = A_k[i - 2];
+    const double A_2 = A_k[i - 1];
+    const double A_3 = A_k[i];
+    const double alpha_i = (A_1 - A_2) / (A_2 - A_3);
+    alpha_k.push_back(alpha_i);
+  }
+  return alpha_k;
+}
+
+std::vector<double>
+richardson_extrapolation_error(const std::vector<double> &A_k,
+                               const double alpha_k_order_expected) {
+  std::vector<double> A_R = {NAN}; // No error on the first
+  for (size_t i = 1; i < A_k.size(); i++) {
+    const double A_1 = A_k[i - 1];
+    const double A_2 = A_k[i];
+    double error = (A_2 - A_1) / (alpha_k_order_expected - 1);
+    A_R.push_back(error);
+  }
+  return A_R;
+}
+
+double
+richardson_extrapolation_error_current(const std::vector<double> &A_k,
+                                       const double alpha_k_order_expected) {
+  double error = std::numeric_limits<double>::max();
+  if (A_k.size() < 2) {
+    return error;
+  } else {
+    const double A_1 = A_k[A_k.size() - 2];
+    const double A_2 = A_k[A_k.size() - 1];
+    // FIX: Only use expected if compute_order_estimate is good.
+    error = (A_2 - A_1) / (alpha_k_order_expected - 1);
+    return error;
+  }
+}
+
+std::vector<double>
+compute_order_estimate(const std::vector<double> &alpha_k_computed) {
+  std::vector<double> order_estimate = {NAN,
+                                        NAN}; // No order for first two entries
+  for (size_t i = 2; i < alpha_k_computed.size(); i++) {
+    double p = log2(alpha_k_computed[i]);
+    order_estimate.push_back(p);
+  }
+  return order_estimate;
+}
+
 // y(target_x) = ?
-void finite_difference_method(const int starting_N, const double target_x,
-                              const double a, const double b,
-                              const double alpha, const double beta,
-                              double F(double y_prime, double y, double x),
-                              double F_y(double y_prime, double y, double x),
-                              double F_y_prime(double y_prime, double y,
-                                               double x),
-                              double accuracy = 1e-6, size_t max_N = 1000) {
+std::vector<VecDoub>
+finite_difference_method(const int starting_N, const double target_x,
+                         const double a, const double b, const double alpha,
+                         const double beta,
+                         double F(double y_prime, double y, double x),
+                         double F_y(double y_prime, double y, double x),
+                         double F_y_prime(double y_prime, double y, double x),
+                         double accuracy, size_t max_N) {
   std::vector<VecDoub> y_estimates;
   int N = starting_N;
 
@@ -121,14 +173,78 @@ void finite_difference_method(const int starting_N, const double target_x,
     y = y_new;
     if (y_estimates.size() > 2) {
       const auto target_estimates = target_values(y_estimates, target_x, a, b);
-      util::print(target_estimates, "target_estimates");
 
+      // Expected order is 2, then since N*=2, alpha^k is then pow(2,2)
+      const auto error =
+          richardson_extrapolation_error_current(target_estimates, pow(2, 2));
       // Use richardson error to stop or use max_N
-      should_stop = true;
+      if (abs(error) < accuracy || N >= max_N) {
+        should_stop = true;
+      }
     }
   }
 
+  return y_estimates;
+}
+
+void finite_difference_method_table(
+    const int starting_N, const double target_x, const double a, const double b,
+    const double alpha, const double beta,
+    double F(double y_prime, double y, double x),
+    double F_y(double y_prime, double y, double x),
+    double F_y_prime(double y_prime, double y, double x),
+    double accuracy = 1e-4, size_t max_N = 1000) {
+  const double expected_order = 2.0;
+  const auto y_estimates =
+      finite_difference_method(starting_N, target_x, a, b, alpha, beta, F, F_y,
+                               F_y_prime, accuracy, max_N);
+  const auto A_k = target_values(y_estimates, target_x, a, b);
   // TODO: Table stuff
+  // Calculate the differences
+  std::vector<double> A_diff_k = {NAN};
+  for (size_t i = 1; i < A_k.size(); i++) {
+    double diff = A_k[i - 1] - A_k[i];
+    A_diff_k.push_back(diff);
+  }
+
+  // Calculate the orders
+  const auto alpha_k_computed = alpha_k_order_computed(A_k);
+
+  // Calculate the richardson extrapolation
+  const auto rich_error = richardson_extrapolation_error(
+      A_k, pow(2, expected_order)); // pow(2, expected_order) as we use N*=2
+
+  const auto order_estimate = compute_order_estimate(alpha_k_computed);
+
+  const std::vector<int> f_comps(A_k.size());
+
+  // Print the table
+  // Table header
+  std::println("|{:^6}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|{:^10}|", "i", "A(i)",
+               "A(i-1)-A(i)", "alpha^k", "Rich error", "Order est.", "f comps");
+  // Table header separator
+  std::println("|{:-^6}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^10}|", "",
+               "", "", "", "", "", "");
+
+  // Table body
+  auto N = starting_N;
+  for (size_t i = 0; i < A_k.size(); i++) {
+    if (i == 0) {
+      std::println(
+          "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|", N,
+          A_k.at(i), "", "", "", "", f_comps.at(i));
+    } else if (i == 1) {
+      std::println(
+          "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|", N,
+          A_k.at(i), A_diff_k.at(i), "", rich_error.at(i), "", f_comps.at(i));
+    } else {
+      std::println(
+          "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|", N,
+          A_k.at(i), A_diff_k.at(i), alpha_k_computed.at(i), rich_error.at(i),
+          order_estimate.at(i), f_comps.at(i));
+    }
+    N *= 2;
+  }
 }
 
 // y_mm(x)  = 2*x+sin(y'(x))-cos(y(x)) for 0<x<2
@@ -163,6 +279,7 @@ int main() {
     int N = 4;
     // y(1) = ?
     double target_x = 1;
-    finite_difference_method(N, target_x, a, b, alpha, beta, F, F_y, F_y_prime);
+    finite_difference_method_table(N, target_x, a, b, alpha, beta, F, F_y,
+                                   F_y_prime);
   }
 }

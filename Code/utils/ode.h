@@ -219,9 +219,7 @@ void print_ode_table(const double low, const double high,
           biggest_error = abs(errors[i]);
         }
       }
-      if (biggest_error < accuracy) {
-        should_stop = true;
-      } else if (its >= max_steps) {
+      if (biggest_error < accuracy || its >= max_steps) {
         should_stop = true;
       }
     }
