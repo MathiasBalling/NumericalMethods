@@ -1,6 +1,5 @@
 #include "nr3.h"
 #include "tridag.h"
-#include "utilities.h"
 #include <print>
 #include <vector>
 
@@ -155,8 +154,24 @@ finite_difference_method(const int starting_N, const double target_x,
       y[i] += J_u_solver[i - 1];
     }
 
-    // Half the step size and fill in missing y values with linear
-    // interpolation
+    // Save the current y
+    y_estimates.push_back(y);
+
+    // Check if we should stop
+    if (y_estimates.size() > 2) {
+      const auto target_estimates = target_values(y_estimates, target_x, a, b);
+
+      // Expected order is 2, then since N*=2, alpha^k is then pow(2,2)
+      const auto error =
+          richardson_extrapolation_error_current(target_estimates, pow(2, 2));
+      // Use richardson error to stop or use max_N
+      if (abs(error) < accuracy || N >= max_N) {
+        should_stop = true;
+      }
+    }
+
+    // Half the step size and fill in missing y values with linear interpolation
+    // for the next round
     N *= 2;
     VecDoub y_new(N + 1);
     y_new[0] = alpha;
@@ -169,19 +184,7 @@ finite_difference_method(const int starting_N, const double target_x,
       }
     }
 
-    y_estimates.push_back(y);
     y = y_new;
-    if (y_estimates.size() > 2) {
-      const auto target_estimates = target_values(y_estimates, target_x, a, b);
-
-      // Expected order is 2, then since N*=2, alpha^k is then pow(2,2)
-      const auto error =
-          richardson_extrapolation_error_current(target_estimates, pow(2, 2));
-      // Use richardson error to stop or use max_N
-      if (abs(error) < accuracy || N >= max_N) {
-        should_stop = true;
-      }
-    }
   }
 
   return y_estimates;
@@ -199,7 +202,6 @@ void finite_difference_method_table(
       finite_difference_method(starting_N, target_x, a, b, alpha, beta, F, F_y,
                                F_y_prime, accuracy, max_N);
   const auto A_k = target_values(y_estimates, target_x, a, b);
-  // TODO: Table stuff
   // Calculate the differences
   std::vector<double> A_diff_k = {NAN};
   for (size_t i = 1; i < A_k.size(); i++) {
@@ -280,6 +282,6 @@ int main() {
     // y(1) = ?
     double target_x = 1;
     finite_difference_method_table(N, target_x, a, b, alpha, beta, F, F_y,
-                                   F_y_prime);
+                                   F_y_prime, 0, 1000);
   }
 }
