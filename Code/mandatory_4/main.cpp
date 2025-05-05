@@ -31,7 +31,7 @@ int main() {
     for (int N = 50; N <= 800; N *= 2) {
       auto v_n = v;
       VecDoub res = trapezoidal(x_low, x_high, N, v_n, derivs);
-      util::print(res, std::format("Trapezoidal with N={}, h={}", N,
+      util::print(res, std::format("v1'(5), v2'(5), v3'(5) with N={}, h={}", N,
                                    (x_high - x_low) / (double)N));
     }
   }

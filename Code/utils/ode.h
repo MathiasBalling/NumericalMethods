@@ -252,8 +252,8 @@ void print_ode_table(const double low, const double high,
   for (size_t i = 0; i < vec_size; i++) {
     // Table header
     std::println("For y({})", i);
-    std::println("|{:^7}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|{:^10}|", "i",
-                 "A(i)", "A(i-1)-A(i)", "alpha^k", "Rich error", "Order est.",
+    std::println("|{:^7}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|{:^10}|", "N",
+                 "A(N)", "A(N/2)-A(N)", "alpha^k", "Rich error", "Order est.",
                  "f comps");
     // Table header separator
     std::println("|{:-^7}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^10}|", "",

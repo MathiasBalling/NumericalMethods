@@ -1,0 +1,96 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+
+\title{Mandatory 4}
+\author{Mathias Balling}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 3}
+Code for the exercises can be foind in "mandatory\_4/main.cpp" and "utils/".
+
+The equation is set up as follows:
+\begin{minted}{cpp}
+VecDoub derivs(const Doub t, VecDoub_I &v) {
+  VecDoub_O dvdt(3);
+  dvdt[0] = exp(-t) * cos(v[1]) + pow(v[2], 2) - v[0];
+  dvdt[1] = cos(pow(v[2], 2)) - v[1];
+  dvdt[2] = cos(t) * exp(-pow(v[0], 2)) - v[2];
+  return dvdt;
+}
+\end{minted}
+
+\subsection*{3.1}
+$$\begin{array}{rcl}
+  v_1'(0)&=&7.583853163452858\\
+  v_2'(0)&=&-2.911130261884677\\
+  v_3'(0)&=&-2.6321205588285577\\
+\end{array}$$
+
+\subsection*{3.2}
+\begin{minted}{text}
+v1'(5), v2'(5), v3'(5) with N=50, h=0.1 , vec_size 3
+0.22036334741857197     0.974731402942015       -0.2058170170760096
+
+v1'(5), v2'(5), v3'(5) with N=100, h=0.05 , vec_size 3
+0.22930763450443528     0.973473649310275       -0.23381689689962976
+
+v1'(5), v2'(5), v3'(5) with N=200, h=0.025 , vec_size 3
+0.2378207610883643      0.9722033785617273      -0.260787727843097
+
+v1'(5), v2'(5), v3'(5) with N=400, h=0.0125 , vec_size 3
+0.23784281379424982     0.9722015341574787      -0.26079977212077576
+
+v1'(5), v2'(5), v3'(5) with N=800, h=0.00625 , vec_size 3
+0.23680841941101274     0.9723602284478439      -0.25748963470881164
+\end{minted}
+\newpage
+\subsection*{3.3}
+\begin{minted}{text}
+For v(1)
+|   N   |        A(N)         |     A(N/2)-A(N)     |     Rich error      |
+|-------|---------------------|---------------------|---------------------|
+|  50   |   0.220363347419    |                     |                     |
+|  100  |   0.229307634504    |  -0.00894428708586  |  0.00298142902862   |
+|  200  |   0.237820761088    |  -0.00851312658393  |  0.00283770886131   |
+|  400  |   0.237842813794    | -2.20527058855e-05  |  7.35090196184e-06  |
+|  800  |   0.236808419411    |  0.00103439438324   | -0.000344798127746  |
+
+For v(2)
+|   N   |        A(N)         |     A(N/2)-A(N)     |     Rich error      |
+|-------|---------------------|---------------------|---------------------|
+|  50   |   0.974731402942    |                     |                     |
+|  100  |    0.97347364931    |  0.00125775363174   |  -0.00041925121058  |
+|  200  |   0.972203378562    |  0.00127027074855   | -0.000423423582849  |
+|  400  |   0.972201534157    |  1.84440424866e-06  | -6.14801416221e-07  |
+|  800  |   0.972360228448    | -0.000158694290365  |  5.28980967884e-05  |
+
+For v(3)
+|   N   |        A(N)         |     A(N/2)-A(N)     |     Rich error      |
+|-------|---------------------|---------------------|---------------------|
+|  50   |   -0.205817017076   |                     |                     |
+|  100  |    -0.2338168969    |   0.0279998798236   |  -0.00933329327454  |
+|  200  |   -0.260787727843   |   0.0269708309435   |  -0.00899027698116  |
+|  400  |   -0.260799772121   |  1.20442776788e-05  | -4.01475922625e-06  |
+|  800  |   -0.257489634709   |  -0.00331013741196  |  0.00110337913732   |
+\end{minted}
+
+The error is calculated using Richardson extrapolation. For N=800 the error for each unknown is calculated as follows:
+$$
+\text{Rich error}=\frac{A(800)-A(400)}{2^2-1}
+$$
+
+$2^2$ is used since the expected order is 2 and N is doubled for each iteration.
+
+The accuracy for the unknown variables at N=800 is:
+$$\begin{array}{rcl}
+  \text{error}(v_1(5))&=&-0.000344798127746\\
+  \text{error}(v_2(5))&=&5.28980967884e-05\\
+  \text{error}(v_3(5))&=&0.00110337913732\\
+\end{array}$$
+
+\end{document}
