@@ -164,6 +164,7 @@ compute_order_estimate(const std::vector<VecDoub> &alpha_k_computed) {
   return order_estimate;
 }
 
+// Set accuracy to 0 to run to max_steps
 void print_ode_table(const double low, const double high,
                      const int starting_steps, VecDoub_I &y,
                      VecDoub derivs(const Doub x, VecDoub_I &y),
