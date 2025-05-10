@@ -1,5 +1,5 @@
-#ifndef DE_RULE_TABLE_H
-#define DE_RULE_TABLE_H
+#ifndef DE_RULE_H
+#define DE_RULE_H
 #include "nr3.h"
 #include "quadrature.h"
 #include <numbers>
@@ -86,4 +86,4 @@ private:
     m_error = exp(-pow(std::numbers::pi, 2) / h_vals.back());
   }
 };
-#endif // !DE_RULE_TABLE_H
+#endif // !DE_RULE_H

@@ -1,7 +1,7 @@
-#include "linreg_error.h"
 #include "nr3.h"
 #include "svd.h"
-#include "utilities.h"
+#include "utils/linreg_error.h"
+#include "utils/utilities.h"
 #include <print>
 #include <utility>
 

@@ -7,7 +7,7 @@ set(CMAKE_BUILD_PARALLEL_LEVEL 10)
 
 add_compile_options(-Wall -Wextra -pedantic -Wconversion -Wshadow)
 include_directories(Numerical-Recipes/)
-include_directories(utils/)
+include_directories(.)
 
 
 add_subdirectory(1/)

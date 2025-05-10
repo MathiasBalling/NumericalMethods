@@ -1,6 +1,6 @@
 #include <print>
 
-int main(int argc, char *argv[]) {
+int main() {
   // See added error estimates in exercises for lecture 5
   return 0;
 }

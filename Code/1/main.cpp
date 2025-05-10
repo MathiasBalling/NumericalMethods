@@ -1,6 +1,6 @@
 #include "ludcmp.h"
 #include "nr3.h"
-#include "utilities.h"
+#include "utils/utilities.h"
 #include <print>
 auto test() { return 0; }
 

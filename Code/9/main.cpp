@@ -1,4 +1,4 @@
-#include "de_rule_table.h"
+#include "utils/de_rule.h"
 #include <print>
 
 double eqn_1(double x, double delta) {

@@ -1,5 +1,5 @@
-#ifndef ROOTS_TABLE_H
-#define ROOTS_TABLE_H
+#ifndef ROOTS_H
+#define ROOTS_H
 #include "nr3.h"
 #include <cmath>
 #include <print>

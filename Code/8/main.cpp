@@ -1,4 +1,4 @@
-#include "quadrature_table.h"
+#include "utils/integrals.h"
 #include <print>
 
 double eqn_1(double x) { return cos(x * x) * exp(-x); }

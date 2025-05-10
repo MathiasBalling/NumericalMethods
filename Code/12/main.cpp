@@ -1,4 +1,4 @@
-#include "bvp.h"
+#include "utils/bvp.h"
 
 // Problem:
 // y_mm(x)  = 2*x+sin(y'(x))-cos(y(x)) for 0<x<2

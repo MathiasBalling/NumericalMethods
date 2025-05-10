@@ -1,5 +1,5 @@
-#include "de_rule_table.h"
-#include "quadrature_table.h"
+#include "utils/de_rule.h"
+#include "utils/integrals.h"
 #include <print>
 
 double eqn(double x) { return (cos(pow(x, 3)) * exp(-x)) / sqrt(x); }

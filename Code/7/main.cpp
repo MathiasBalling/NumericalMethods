@@ -1,7 +1,7 @@
-#include "multi_roots_table.h"
 #include "nr3.h"
 #include "roots_multidim.h"
-#include "utilities.h"
+#include "utils/multi_roots.h"
+#include "utils/utilities.h"
 #include <cassert>
 #include <print>
 

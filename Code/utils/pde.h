@@ -2,6 +2,7 @@
 #define PDE_H
 #include "banded.h"
 #include "nr3.h"
+#include "utils/errors.h"
 #include <cassert>
 #include <cmath>
 #include <cstddef>
@@ -107,6 +108,30 @@ double pde(const size_t N, const double lambda, const double low,
   // find u(0.5, 0.5)
   size_t center_idx = idx((n - 1) / 2, (n - 1) / 2, n);
   return sol[center_idx];
+}
+
+void pde_table(const int starting_steps, const double lambda,
+               double f(double x, double y),
+               double u_boundary(double x, double y), double accuracy = 1e-5) {
+  const double low = 0.0;
+  const double high = 1.0;
+  std::vector<double> A_k;
+  const double expected_order = 0.0;
+  bool should_stop = false;
+  size_t N = starting_steps;
+  while (!should_stop) {
+    const double res = pde(N, lambda, low, high, f, u_boundary);
+    A_k.push_back(res);
+
+    if (A_k.size() >= 2) {
+      const auto error =
+          richardson_extrapolation_error_current(A_k, pow(2, expected_order));
+      if (error < accuracy) {
+        should_stop = true;
+      }
+    }
+    N *= 2;
+  }
 }
 
 #endif // PDE_H

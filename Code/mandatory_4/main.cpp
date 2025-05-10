@@ -1,6 +1,6 @@
 #include "nr3.h"
-#include "ode.h"
-#include "utilities.h"
+#include "utils/ode.h"
+#include "utils/utilities.h"
 #include <print>
 
 VecDoub derivs(const Doub t, VecDoub_I &v) {

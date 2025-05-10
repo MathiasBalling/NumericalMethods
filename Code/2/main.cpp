@@ -1,7 +1,7 @@
 #include "cholesky.h"
 #include "ludcmp.h"
 #include "nr3.h"
-#include "utilities.h"
+#include "utils/utilities.h"
 #include <print>
 
 void solveFilip(VecDoub x, VecDoub y, int parameters) {

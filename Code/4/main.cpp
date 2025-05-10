@@ -1,7 +1,7 @@
-#include "utilities.h"
+#include "utils/utilities.h"
 #include <print>
 
-int main(int argc, char *argv[]) {
+int main() {
   std::println("Hello ");
   return 0;
 }

@@ -1,5 +1,5 @@
-#ifndef ROOTS_TABLE_H
-#define ROOTS_TABLE_H
+#ifndef MULTI_ROOTS_H
+#define MULTI_ROOTS_H
 #include "nr3.h"
 #include "roots_multidim.h"
 #include "utilities.h"
@@ -139,4 +139,4 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
   }
   throw("MAXITS exceeded in newt");
 }
-#endif // !ROOTS_TABLE_H
+#endif // !MULTI_ROOTS_H

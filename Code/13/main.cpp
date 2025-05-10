@@ -1,4 +1,4 @@
-#include "pde.h"
+#include "utils/pde.h"
 
 // Function to be integrated
 double f(double x, double y) { return 1 + x + y; }
