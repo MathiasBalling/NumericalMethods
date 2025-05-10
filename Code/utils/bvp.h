@@ -172,8 +172,8 @@ void finite_difference_method_table(
 
   // Print the table
   // Table header
-  std::println("|{:^6}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|{:^10}|", "i", "A(i)",
-               "A(i-1)-A(i)", "alpha^k", "Rich error", "Order est.", "f comps");
+  std::println("|{:^6}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|{:^10}|", "N", "A(N)",
+               "A(N/2)-A(N)", "alpha^k", "Rich error", "Order est.", "f comps");
   // Table header separator
   std::println("|{:-^6}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^10}|", "",
                "", "", "", "", "", "");

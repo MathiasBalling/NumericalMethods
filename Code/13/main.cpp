@@ -13,6 +13,5 @@ double u_boundary(double x, double y) {
 int main() {
   const size_t N = 4;
   const double lambda = 0.0;
-  const auto res = pde(N, lambda, 0.0, 1.0, f, u_boundary);
-  std::println("res: {}", res);
+  pde_table(N, lambda, f, u_boundary, 1e-5, 100);
 }

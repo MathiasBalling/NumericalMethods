@@ -1,6 +1,7 @@
 #ifndef ERRORS_H
 #define ERRORS_H
-#include "nr3.h"
+#include "vector"
+#include <cmath>
 
 std::vector<double> alpha_k_order_computed(const std::vector<double> &A_k) {
   std::vector<double> alpha_k = {NAN, NAN}; // No error on the first two
@@ -36,7 +37,7 @@ richardson_extrapolation_error_current(const std::vector<double> &A_k,
   } else {
     const double A_1 = A_k[A_k.size() - 2];
     const double A_2 = A_k[A_k.size() - 1];
-    // FIX: Only use expected if compute_order_estimate is good.
+    // INFO: Only use expected order if compute_order_estimate converges.
     error = (A_2 - A_1) / (alpha_k_order_expected - 1);
     return error;
   }

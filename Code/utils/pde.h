@@ -112,11 +112,12 @@ double pde(const size_t N, const double lambda, const double low,
 
 void pde_table(const int starting_steps, const double lambda,
                double f(double x, double y),
-               double u_boundary(double x, double y), double accuracy = 1e-5) {
+               double u_boundary(double x, double y), double accuracy = 1e-5,
+               int max_N = 200) {
   const double low = 0.0;
   const double high = 1.0;
   std::vector<double> A_k;
-  const double expected_order = 0.0;
+  const double expected_order = 2.0;
   bool should_stop = false;
   size_t N = starting_steps;
   while (!should_stop) {
@@ -126,11 +127,52 @@ void pde_table(const int starting_steps, const double lambda,
     if (A_k.size() >= 2) {
       const auto error =
           richardson_extrapolation_error_current(A_k, pow(2, expected_order));
-      if (error < accuracy) {
+      if (error < accuracy || N >= max_N) {
         should_stop = true;
       }
     }
     N *= 2;
+  }
+
+  // Calculate the differences
+  std::vector<double> A_diff_k = {NAN};
+  for (size_t i = 1; i < A_k.size(); i++) {
+    double diff = A_k[i - 1] - A_k[i];
+    A_diff_k.push_back(diff);
+  }
+
+  // Calculate the orders
+  const auto alpha_k_computed = alpha_k_order_computed(A_k);
+
+  // Calculate the richardson extrapolation
+  const auto rich_error = richardson_extrapolation_error(
+      A_k, pow(2, expected_order)); // pow(2, expected_order) as we use N*=2
+
+  const auto order_estimate = compute_order_estimate(alpha_k_computed);
+
+  // Print the table
+  // Table header
+  std::println("|{:^6}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|", "N", "A(N)",
+               "A(N/2)-A(N)", "alpha^k", "Rich error", "Order est.");
+  // Table header separator
+  std::println("|{:-^6}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|", "", "", "",
+               "", "", "");
+
+  // Table body
+  auto N_A = starting_steps;
+  for (size_t i = 0; i < A_k.size(); i++) {
+    if (i == 0) {
+      std::println("|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|",
+                   N_A, A_k.at(i), "", "", "", "");
+    } else if (i == 1) {
+      std::println("|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|",
+                   N_A, A_k.at(i), A_diff_k.at(i), "", rich_error.at(i), "");
+    } else {
+      std::println("|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|",
+                   N_A, A_k.at(i), A_diff_k.at(i), alpha_k_computed.at(i),
+                   rich_error.at(i), order_estimate.at(i));
+    }
+    N_A *= 2;
   }
 }
 
