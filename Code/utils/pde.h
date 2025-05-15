@@ -88,7 +88,6 @@ double pde(const size_t N, const double lambda, const double low,
   // Convert to band-diagonal system
   MatDoub A_bandec(total_points, 2 * n + 1);
   for (int i = 0; i < total_points; i++) {
-    A_bandec[i][n] = A[i][i];
     for (int j = -n; j <= n; j++) {
       const int A_index = i + j;
       const int A_bandec_index = j + n;
@@ -127,9 +126,7 @@ void pde_table(const int starting_steps, const double lambda,
     if (A_k.size() >= 2) {
       const auto error =
           richardson_extrapolation_error_current(A_k, pow(2, expected_order));
-      if (error < accuracy || N >= max_N) {
-        should_stop = true;
-      }
+      should_stop = abs(error) < accuracy || N >= max_N;
     }
     N *= 2;
   }

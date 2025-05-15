@@ -115,9 +115,7 @@ finite_difference_method(const int starting_N, const double target_x,
       const auto error =
           richardson_extrapolation_error_current(target_estimates, pow(2, 2));
       // Use richardson error to stop or use max_N
-      if (abs(error) < accuracy || N >= max_N) {
-        should_stop = true;
-      }
+      should_stop = abs(error) < accuracy || N >= max_N;
     }
 
     // Half the step size and fill in missing y values with linear interpolation

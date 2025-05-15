@@ -5,6 +5,7 @@
 #include "nr3.h"
 #include "utilities.h"
 #include "utils/errors_multi.h"
+#include <cassert>
 
 enum class ODEMethod { Euler, Midpoint, FORTH_ORDER, TRAPEZOIDAL, LEAP_FROG };
 
@@ -78,7 +79,7 @@ VecDoub trapezoidal(double x_low, double x_high, int steps, VecDoub_I &y,
     };
 
     bool check;
-    newton_multi(y_n_next, check, func, 200, 1.0e-7);
+    newton_multi(y_n_next, check, func, 300, 1.0e-7);
     y_n = y_n_next;
   }
 
