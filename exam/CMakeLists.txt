@@ -1,0 +1,6 @@
+add_executable(exam1 main1.cpp)
+add_executable(exam2 main2.cpp)
+add_executable(exam3 main3.cpp)
+add_executable(exam4 main4.cpp)
+add_executable(exam5 main5.cpp)
+add_executable(exam6 main6.cpp)
