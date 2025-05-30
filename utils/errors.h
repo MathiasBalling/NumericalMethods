@@ -48,7 +48,7 @@ compute_order_estimate(const std::vector<double> &alpha_k_computed) {
   std::vector<double> order_estimate = {NAN,
                                         NAN}; // No order for first two entries
   for (size_t i = 2; i < alpha_k_computed.size(); i++) {
-    double p = log2(alpha_k_computed[i]);
+    double p = log2(abs(alpha_k_computed[i]));
     order_estimate.push_back(p);
   }
   return order_estimate;
