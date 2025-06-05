@@ -1,2 +1,2 @@
-add_executable(exc13 main.cpp)
+add_executable(exc13 exc13.cpp)
 

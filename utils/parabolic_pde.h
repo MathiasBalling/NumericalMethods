@@ -31,7 +31,7 @@ VecDoub parabolic_pde(const size_t N, const double alpha, const double t_target,
   VecDoub J_a(N - 1), J_b(N - 1), J_c(N - 1), J_u(N - 1), J_r(N - 1);
   VecDoub u_cur(N + 1);
   for (int j = 0; j < N + 1; j++) {
-    const double x = j * h;
+    const double x = j * dx;
     u_cur[j] = g(x);
   }
 
@@ -39,7 +39,7 @@ VecDoub parabolic_pde(const size_t N, const double alpha, const double t_target,
   for (size_t n = 0; n <= t_steps; n++) {
     double t_n = n * dt;
     for (int j = 1; j < N; j++) {
-      const double x = j * h;
+      const double x = j * dx;
       J_a[j - 1] = -0.5 * r;
       J_b[j - 1] = 1 + r;
       J_c[j - 1] = -0.5 * r;

@@ -1,1 +1,1 @@
-add_executable(exc3 main.cpp)
+add_executable(exc3 exc3.cpp)

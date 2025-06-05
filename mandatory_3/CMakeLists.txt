@@ -1,1 +1,1 @@
-add_executable(man3 main.cpp)
+add_executable(man3 man3.cpp)

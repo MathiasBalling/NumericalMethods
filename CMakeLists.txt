@@ -30,4 +30,5 @@ add_subdirectory(mandatory_3/)
 add_subdirectory(mandatory_4/)
 add_subdirectory(mandatory_5/)
 
+add_subdirectory(exam_prep/)
 add_subdirectory(exam/)

@@ -1,2 +1,2 @@
-add_executable(exc8 main.cpp)
+add_executable(exc8 exc8.cpp)
 

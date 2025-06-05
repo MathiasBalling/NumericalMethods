@@ -3,6 +3,7 @@
 #include "banded.h"
 #include "nr3.h"
 #include "utils/errors.h"
+#include "utils/utilities.h"
 #include <cassert>
 #include <cmath>
 #include <cstddef>

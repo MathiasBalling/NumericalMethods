@@ -1,0 +1,17 @@
+add_executable(2022jun1 2022jun1.cpp)
+add_executable(2022jun2 2022jun2.cpp)
+add_executable(2022jun3 2022jun3.cpp)
+add_executable(2022jun4 2022jun4.cpp)
+add_executable(2022jun5 2022jun5.cpp)
+
+add_executable(2023aug1 2023aug1.cpp)
+add_executable(2023aug2 2023aug2.cpp)
+add_executable(2023aug3 2023aug3.cpp)
+add_executable(2023aug4 2023aug4.cpp)
+add_executable(2023aug5 2023aug5.cpp)
+
+add_executable(2023jun1 2023jun1.cpp)
+add_executable(2023jun2 2023jun2.cpp)
+add_executable(2023jun3 2023jun3.cpp)
+add_executable(2023jun4 2023jun4.cpp)
+add_executable(2023jun5 2023jun5.cpp)

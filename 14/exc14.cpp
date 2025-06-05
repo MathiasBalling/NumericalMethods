@@ -23,5 +23,6 @@ int main() {
   size_t N = 2;
   double x_target = 0.5;
   double t_target = 20.0;
+
   parabolic_pde_table(N, alpha, x_target, t_target, f, u, 1e-4, 1000);
 }

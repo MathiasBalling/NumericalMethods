@@ -1,1 +1,1 @@
-add_executable(exc7 main.cpp)
+add_executable(exc7 exc7.cpp)

@@ -1,2 +1,1 @@
-add_executable(exc11 main.cpp)
-
+add_executable(exc11 exc11.cpp)

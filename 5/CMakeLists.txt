@@ -1,2 +1,2 @@
-add_executable(exc5 main.cpp)
+add_executable(exc5 exc5.cpp)
 
