@@ -6,7 +6,6 @@ double eqn(double x) { return (cos(pow(x, 3)) * exp(-x)) / sqrt(x); }
 
 double eqn_derule(double x, double delta) {
   // If x is small use delta instead to avoid division by zero
-  // TODO: How to deal with delta
   if (abs(x) < 1e-6) {
     return (cos(pow(x, 3)) * exp(-x)) / sqrt(delta);
   } else {

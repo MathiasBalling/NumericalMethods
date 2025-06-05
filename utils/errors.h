@@ -37,7 +37,7 @@ richardson_extrapolation_error_current(const std::vector<double> &A_k,
   } else {
     const double A_1 = A_k[A_k.size() - 2];
     const double A_2 = A_k[A_k.size() - 1];
-    // INFO: Only use expected order if compute_order_estimate converges.
+    // INFO: Only use expected order if computed_order_estimate converges.
     error = (A_2 - A_1) / (alpha_k_order_expected - 1);
     return error;
   }

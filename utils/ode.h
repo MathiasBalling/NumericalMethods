@@ -79,7 +79,7 @@ VecDoub trapezoidal(double x_low, double x_high, int steps, VecDoub_I &y,
     };
 
     bool check;
-    newton_multi(y_n_next, check, func, 300, 1.0e-7);
+    newt(y_n_next, check, func);
     y_n = y_n_next;
   }
 

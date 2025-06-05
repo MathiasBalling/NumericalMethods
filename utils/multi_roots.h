@@ -4,7 +4,8 @@
 #include "roots_multidim.h"
 #include "utilities.h"
 
-void print_roots_table(std::vector<VecDoub> x_k) {
+void print_roots_table(std::vector<VecDoub> x_k, int max_its = 200,
+                       double accuracy = 1.0e-8) {
   std::vector<VecDoub> d_k;
   d_k.push_back(VecDoub(2));
   for (size_t i = 1; i < x_k.size(); i++) {
@@ -35,21 +36,45 @@ void print_roots_table(std::vector<VecDoub> x_k) {
 
   // Table body
   for (size_t i = 0; i < x_k.size(); i++) {
-    std::println("|{:^10}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|", i + 1,
-                 x_k.at(i)[0], d_k.at(i)[0], C.at(i), e_k.at(i));
-    for (int j = 1; j < x_k.at(i).size(); j++) {
-      std::println("|{:^10}|{:^21.12}|{:^21.12}|{:^21}|{:^21}|", i + 1,
-                   x_k.at(i)[j], d_k.at(i)[j], "", "");
+    if (i == 0) {
+      std::println("|{:^10}|{:^21}|{:^21}|{:^21}|{:^21}|", i + 1, "", "", "",
+                   "");
+      for (int j = 0; j < x_k.at(i).size(); j++) {
+        std::println("|{:^10}|{:^21.12}|{:^21}|{:^21}|{:^21}|",
+                     std::format("{}({})", (i + 1), j), x_k.at(i)[j], "", "",
+                     "");
+      }
+    } else if (i == 1) {
+      std::println("|{:^10}|{:^21}|{:^21}|{:^21}|{:^21}|", i + 1, "", "", "",
+                   "");
+      for (int j = 0; j < x_k.at(i).size(); j++) {
+        std::println("|{:^10}|{:^21.12}|{:^21.12}|{:^21}|{:^21}|",
+                     std::format("{}({})", (i + 1), j), x_k.at(i)[j],
+                     d_k.at(i)[j], "", "");
+      }
+    } else {
+      std::println("|{:^10}|{:^21}|{:^21}|{:^21.12}|{:^21.12}|", i + 1, "", "",
+                   C.at(i), e_k.at(i));
+      for (int j = 0; j < x_k.at(i).size(); j++) {
+        std::println("|{:^10}|{:^21.12}|{:^21.12}|{:^21}|{:^21}|",
+                     std::format("{}({})", (i + 1), j), x_k.at(i)[j],
+                     d_k.at(i)[j], "", "");
+      }
+      if (i + 2 > max_its || e_k.at(i) < accuracy) {
+        return;
+      }
     }
   }
 }
 
+// `newt` function with data table
 template <class T>
-void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
-                  Doub tolerance = 1.0e-8, bool print_table = false) {
+void newton_multi_table(VecDoub_IO &x, Bool &check, T &vecfunc,
+                        int max_its = 200, Doub accuracy = 1.0e-8) {
   std::vector<VecDoub> x_k; // For table
-  const Doub TOLF = tolerance, TOLMIN = 1.0e-12, STPMX = 100.0;
+  const Doub TOLF = 1.0e-8, TOLMIN = 1.0e-12, STPMX = 100.0;
   const Doub TOLX = std::numeric_limits<Doub>::epsilon();
+  const Doub MAXITS = 200;
   Int i, j, its, n = x.size();
   Doub den, f, fold, stpmax, sum, temp, test;
   VecDoub g(n), p(n), xold(n);
@@ -70,7 +95,7 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
   for (i = 0; i < n; i++)
     sum += SQR(x[i]);
   stpmax = STPMX * MAX(sqrt(sum), Doub(n));
-  for (its = 0; its < max_its; its++) {
+  for (its = 0; its < MAXITS; its++) {
     fjac = fdjac(x, fvec);
     for (i = 0; i < n; i++) {
       sum = 0.0;
@@ -92,13 +117,8 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
         test = abs(fvec[i]);
     if (test < TOLF) {
       check = false;
-      x_k.push_back(x);
-      if (print_table) {
-        print_roots_table(x_k);
-      }
-      // else {
-      //   println("Done in {} iterations.", its);
-      // }
+      x_k.push_back(x);                          // For table
+      print_roots_table(x_k, max_its, accuracy); // For table
       return;
     }
     if (check) {
@@ -110,13 +130,8 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
           test = temp;
       }
       check = (test < TOLMIN);
-      x_k.push_back(x);
-      if (print_table) {
-        print_roots_table(x_k);
-      }
-      // else {
-      //   println("Done in {} iterations.", its);
-      // }
+      x_k.push_back(x);                          // For table
+      print_roots_table(x_k, max_its, accuracy); // For table
       return;
     }
     test = 0.0;
@@ -126,16 +141,11 @@ void newton_multi(VecDoub_IO &x, Bool &check, T &vecfunc, int max_its = 200,
         test = temp;
     }
     if (test < TOLX) {
-      x_k.push_back(x);
-      if (print_table) {
-        print_roots_table(x_k);
-      }
-      // else {
-      //   println("Done in {} iterations.", its);
-      // }
+      x_k.push_back(x);                          // For table
+      print_roots_table(x_k, max_its, accuracy); // For table
       return;
     }
-    x_k.push_back(x);
+    x_k.push_back(x); // For table
   }
   throw("MAXITS exceeded in newt");
 }

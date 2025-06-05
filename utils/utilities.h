@@ -2,6 +2,7 @@
 #define UTILITIES_H_
 
 #include "nr3.h"
+#include <cassert>
 #include <print>
 #include <string>
 
@@ -124,6 +125,14 @@ VecDoub operator-(const VecDoub &v1, const VecDoub &v2) {
   return res;
 }
 
+VecDoub operator-(const VecDoub &v) {
+  VecDoub result(v.size());
+  for (int i = 0; i < v.size(); ++i) {
+    result[i] = -v[i];
+  }
+  return result;
+}
+
 VecDoub operator+(const VecDoub &a, const VecDoub &b) {
   if (a.size() != b.size()) {
     std::println(stderr, "in prod: the number of rows in A is not equal to the "
@@ -140,6 +149,16 @@ VecDoub operator/(const VecDoub &v, double s) {
   VecDoub res(v.size());
   for (int i = 0; i < v.size(); i++) {
     res[i] = v[i] / s;
+  }
+  return res;
+}
+
+// Dot product
+double operator*(const VecDoub &v, const VecDoub &w) {
+  assert(v.size() == w.size());
+  double res = 0;
+  for (int i = 0; i < v.size(); i++) {
+    res += v[i] * w[i];
   }
   return res;
 }

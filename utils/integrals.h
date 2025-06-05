@@ -51,14 +51,13 @@ double simpson(double (*func)(double), double limit_low, double limit_high,
 
 void print_quadrature_table(double (*func)(double), double limit_low,
                             double limit_high, IntegrationType type,
-                            double accuracy = 1e-10) {
+                            double accuracy = 1e-10, int max_its = 10000) {
   std::vector<double> A_k;
   std::vector<int> f_comps;
   double expected_order = 0.0;
   double error = std::numeric_limits<double>::max();
-  int i = 0;
-  while (abs(error) > accuracy) {
-    const int its = pow(2, i);
+  int its = 2;
+  while (abs(error) > accuracy && its < max_its) {
     switch (type) {
     case IntegrationType::Midpoint:
       A_k.push_back(midpoint(func, limit_low, limit_high, its));
@@ -79,7 +78,7 @@ void print_quadrature_table(double (*func)(double), double limit_low,
       throw("Unknown integration type");
     }
     error = richardson_extrapolation_error_current(A_k, pow(2, expected_order));
-    i += 1;
+    its *= 2;
   }
 
   // Calculate the differences
@@ -101,27 +100,29 @@ void print_quadrature_table(double (*func)(double), double limit_low,
 
   // Print the table
   // Table header
-  std::println("|{:^6}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|{:^10}|", "i", "A(i)",
-               "A(i-1)-A(i)", "alpha^k", "Rich error", "Order est.", "f comps");
+  std::println("|{:^6}|{:^21}|{:^21}|{:^21}|{:^21}|{:^21}|{:^10}|", "its",
+               "A(i)", "A(i-1)-A(i)", "alpha^k", "Rich error", "Order est.",
+               "f comps");
   // Table header separator
   std::println("|{:-^6}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^21}|{:-^10}|", "",
                "", "", "", "", "", "");
 
   // Table body
   for (size_t i = 0; i < A_k.size(); i++) {
+    int its = pow(2, i + 1);
     if (i == 0) {
       std::println(
-          "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|", i,
-          A_k.at(i), "", "", "", "", f_comps.at(i));
+          "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
+          its, A_k.at(i), "", "", "", "", f_comps.at(i));
     } else if (i == 1) {
       std::println(
           "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
-          i + 1, A_k.at(i), A_diff_k.at(i), "", rich_error.at(i), "",
+          its, A_k.at(i), A_diff_k.at(i), "", rich_error.at(i), "",
           f_comps.at(i));
     } else {
       std::println(
           "|{:^6}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^21.12}|{:^10}|",
-          i + 1, A_k.at(i), A_diff_k.at(i), alpha_k_computed.at(i),
+          its, A_k.at(i), A_diff_k.at(i), alpha_k_computed.at(i),
           rich_error.at(i), order_estimate.at(i), f_comps.at(i));
     }
   }

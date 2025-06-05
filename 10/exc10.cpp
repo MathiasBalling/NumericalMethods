@@ -76,7 +76,7 @@ int main() {
   }
 
   {
-    // INFO: Very unstable method...
+    // INFO: Very unstable method... Should generally not be used
     std::println("\nLeap Frog method:");
     double vals[2] = {1.0, 1.0};
     const VecDoub y(2, vals);

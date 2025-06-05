@@ -44,7 +44,7 @@ int main() {
     util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    newton_multi(q, check, func);
+    newt(q, check, func);
     util::print(q, "q roots with newton");
     std::println("Local minimum: {}", check);
   }
@@ -58,7 +58,7 @@ int main() {
     util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    newton_multi(q, check, func);
+    newt(q, check, func);
     util::print(q, "q roots with newton");
     std::println("Local minimum: {}", check);
   }
@@ -72,7 +72,7 @@ int main() {
     util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    newton_multi(q, check, func);
+    newt(q, check, func);
     util::print(q, "q roots with newton");
     std::println("Local minimum: {}", check);
   }
@@ -86,7 +86,7 @@ int main() {
     util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    newton_multi(q, check, func);
+    newt(q, check, func);
     util::print(q, "q roots with newton");
     std::println("Local minimum: {}", check);
   }
@@ -100,7 +100,7 @@ int main() {
     util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    newton_multi(q, check, func);
+    newt(q, check, func);
     util::print(q, "q roots with newton");
     std::println("Local minimum: {}", check);
   }
@@ -114,7 +114,7 @@ int main() {
     util::print(q, "q initial guess");
     bool check;
     auto func = vecfunc;
-    newton_multi(q, check, func);
+    newt(q, check, func);
     util::print(q, "q roots with newton");
     std::println("Local minimum: {}", check);
   }
