@@ -2,6 +2,23 @@
 #include <print>
 
 int main() {
-  std::println("Exam exercise 3");
-  return 0;
+  {
+    // 1)
+    std::println("\n{:/^100}", " i ");
+  }
+
+  {
+    // 2)
+    std::println("\n{:/^100}", " ii ");
+  }
+
+  {
+    // 3)
+    std::println("\n{:/^100}", " iii ");
+  }
+
+  {
+    // 4)
+    std::println("\n{:/^100}", " iv ");
+  }
 }
