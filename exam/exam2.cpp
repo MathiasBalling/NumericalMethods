@@ -27,12 +27,21 @@ int main() {
   }
 
   {
-    // 2 & 3)
-    std::println("\n{:/^100}", " ii & iii ");
+    // 2)
+    std::println("\n{:/^100}", " ii ");
     double vals[4] = {0.0, 0.0, 0.0, 0.0};
     VecDoub x(4, vals);
     bool check;
-    // TODO: Check for backtracking
+    newton_multi_table(x, check, vecfunc, 7, 0);
+    std::println("Local minimum = {}", check);
+  }
+
+  {
+    // 3)
+    std::println("\n{:/^100}", " iii ");
+    double vals[4] = {0.0, 0.0, 0.0, 0.0};
+    VecDoub x(4, vals);
+    bool check;
     newton_multi_table(x, check, vecfunc, 7, 0);
     std::println("Local minimum = {}", check);
   }

@@ -1,8 +1,8 @@
 #ifndef ODE_H
 #define ODE_H
 
-#include "multi_roots.h"
 #include "nr3.h"
+#include "roots_multidim.h"
 #include "utilities.h"
 #include "utils/errors_multi.h"
 #include <cassert>

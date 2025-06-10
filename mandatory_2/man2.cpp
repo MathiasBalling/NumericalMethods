@@ -1,5 +1,5 @@
 #include "nr3.h"
-#include "utils/multi_roots.h" // Modified newton method
+#include "roots_multidim.h"
 #include "utils/utilities.h"
 #include <cassert>
 #include <cmath>

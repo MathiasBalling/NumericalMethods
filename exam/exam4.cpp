@@ -17,7 +17,6 @@ int main() {
   {
     // 2)
     std::println("\n{:/^100}", " ii ");
-    // TODO: Use rich error with accual alpha_k not expected
   }
 
   {
@@ -28,7 +27,6 @@ int main() {
   {
     // 4)
     std::println("\n{:/^100}", " iv ");
-    // TODO: Use expected rich error
   }
 
   {

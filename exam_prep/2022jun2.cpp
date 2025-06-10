@@ -1,5 +1,4 @@
 #include "nr3.h"
-#include "roots_multidim.h"
 #include "utils/multi_roots.h"
 #include "utils/utilities.h"
 #include <cassert>

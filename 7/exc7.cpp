@@ -1,5 +1,5 @@
 #include "nr3.h"
-#include "roots_multidim.h"
+// #include "roots_multidim.h"
 #include "utils/multi_roots.h"
 #include "utils/utilities.h"
 #include <cassert>
@@ -64,7 +64,7 @@ int main() {
     VecDoub x(2, xvals);
     bool check;
     auto func = vecfunc;
-    newt(x, check, func);
+    // newt(x, check, func);
     util::print(x, "x roots with newton");
     std::println("Local minimum = {}", check);
   }

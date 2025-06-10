@@ -3,7 +3,6 @@
 #include "nr3.h"
 #include "tridag.h"
 #include "utils/errors.h"
-#include "utils/utilities.h"
 #include <cmath>
 
 static size_t f_comps_current = 0;
@@ -68,7 +67,7 @@ void parabolic_pde_table(const size_t N_start, const double alpha,
                          double u(double x, double t),
                          const double accuracy = 1e-4,
                          const size_t max_N = 200) {
-  const double expected_order = 1;
+  const double expected_order = 2;
   std::vector<double> A_k;
   std::vector<size_t> f_comps;
   bool should_stop = false;

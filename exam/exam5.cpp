@@ -1,5 +1,5 @@
-#include "nr3.h"
 #include "utils/parabolic_pde.h"
+#include <cassert>
 #include <numbers>
 #include <print>
 
@@ -22,11 +22,6 @@ double f(double x, double t) { return sin(std::numbers::pi * x) * exp(-t); }
 int main() {
   // 5b
   {
-    // 1)
-    std::println("\n{:/^100}", " i ");
-  }
-
-  {
     // 2)
     std::println("\n{:/^100}", " ii ");
     double alpha = 4.0;
@@ -35,6 +30,9 @@ int main() {
     size_t N = (1.0 - 0.0) / 0.25;
     std::println("N: {}", N);
 
-    parabolic_pde_table(N, alpha, x_target, t_target, f, u, 1e-7, 100000);
+    // 10 hours still not done :(
+    // parabolic_pde_table(N, alpha, x_target, t_target, f, u, 1e-7, 1000000);
+    // Done after 30 minutes
+    parabolic_pde_table(N, alpha, x_target, t_target, f, u, 1e-6, 1000000);
   }
 }
